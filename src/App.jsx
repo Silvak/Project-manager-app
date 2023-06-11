@@ -12,6 +12,7 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
+import GanttChart from "./components/GanttChart";
 
 const style = {
   bg: `h-screen w-screen bg-gray-100`, //<< "w-screen" can cause a problem in the general width of the application
@@ -35,6 +36,17 @@ function App() {
         const payload = {
           title: input,
           completed: false,
+          start: new Date(2020, 1, 1),
+          end: new Date(2020, 1, 2),
+          name: "Idea",
+          id: "Task 0",
+          type: "task",
+          progress: 45,
+          isDisabled: true,
+          styles: {
+            progressColor: "#ffbb54",
+            progressSelectedColor: "#ff9e0d",
+          },
         };
         await addDoc(docRef, payload);
         setInput("");
@@ -111,6 +123,10 @@ function App() {
         {projects.length > 0 && (
           <p className={style.count}>You have {projects.length} todos</p>
         )}
+      </div>
+
+      <div>
+        <GanttChart />
       </div>
     </div>
   );
