@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Epic from "./components/Epic";
-
 import { db } from "./firebase";
 import {
   collection,
@@ -13,6 +12,10 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import GanttChart from "./components/GanttChart";
+//hooks
+import useCreate from "./hooks/useCreate";
+import useUpdate from "./hooks/useUpdate";
+import useDelete from "./hooks/useDelete";
 
 const style = {
   bg: `h-screen w-screen bg-gray-100`, //<< "w-screen" can cause a problem in the general width of the application
@@ -24,42 +27,37 @@ function App() {
   const [projects, setProjects] = useState([]);
   const [input, setInput] = useState("");
 
-  //Create projects
+  //CREATE PROJECTS
   const createProject = async (e) => {
     e.preventDefault(e);
     if (input === "") {
       alert("No puedes crear un epic vacio");
       return;
     } else {
-      try {
-        const docRef = await collection(db, "projects");
-        const payload = {
-          title: input,
-          completed: false,
-          start: new Date(2020, 1, 1),
-          end: new Date(2020, 1, 2),
-          name: "Idea",
-          id: "Task 0",
-          type: "task",
-          progress: 45,
-          isDisabled: true,
-          styles: {
-            progressColor: "#ffbb54",
-            progressSelectedColor: "#ff9e0d",
-          },
-        };
-        await addDoc(docRef, payload);
-        setInput("");
-      } catch (err) {
-        console.error("Error adding document: ", err);
-      }
+      const payload = {
+        completed: false,
+        start: new Date(2020, 2, 15),
+        end: new Date(2020, 3, 15),
+        name: input,
+        id: "Task 0",
+        type: "task",
+        progress: 10,
+        isDisabled: true,
+        styles: {
+          progressColor: "#ffbb54",
+          progressSelectedColor: "#ff9e0d",
+        },
+      };
+      useCreate("projects", payload);
+      setInput("");
     }
   };
 
-  //Read projects from firebase
-  const readProjects = () => {
+  //READ PROJECTS
+  const readData = (docName) => {
     try {
       const q = query(collection(db, "projects"));
+
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         let projectsArr = [];
         querySnapshot.forEach((doc) => {
@@ -67,25 +65,27 @@ function App() {
         });
         setProjects(projectsArr);
       });
+
+      return () => {
+        unsubscribe();
+      };
     } catch (err) {
       console.error("Error adding document: ", err);
     }
   };
 
   useEffect(() => {
-    readProjects();
+    readData("projects");
   }, []);
 
-  //Update projects from firebase
+  //UPDATE PROJECTS
   const toggleComplete = async (project) => {
-    await updateDoc(doc(db, "projects", project.id), {
-      completed: !project.completed,
-    });
+    useUpdate("projects", project.id, { completed: !project.completed });
   };
 
-  //Delete projects
+  //DELETE PROJECTS
   const deleteProject = async (id) => {
-    await deleteDoc(doc(db, "projects", id));
+    useDelete("projects", id);
   };
 
   return (
@@ -125,9 +125,7 @@ function App() {
         )}
       </div>
 
-      <div>
-        <GanttChart />
-      </div>
+      <div>{/* <GanttChart /> */}</div>
     </div>
   );
 }

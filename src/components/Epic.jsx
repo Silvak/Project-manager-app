@@ -20,7 +20,7 @@ function Epic({ project, toggleComplete, deleteProject }) {
           onClick={() => toggleComplete(project)}
           className={project.completed ? style.completed : style.text}
         >
-          {project.title}
+          {project.name}
         </p>
       </div>
       <button onClick={() => deleteProject(project.id)}>
