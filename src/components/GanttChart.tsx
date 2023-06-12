@@ -1,12 +1,22 @@
 import React from "react";
 import { Gantt, Task, ViewMode } from "gantt-task-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { initTasks, getStartEndDateForProject } from "../helpers";
 import { ViewSwitcher } from "./ViewSwitcher";
 
-export default function App() {
+export default function GanttChart() {
   const [view, setView] = useState<ViewMode>(ViewMode.Day);
-  const [tasks, setTasks] = useState<Task[]>(initTasks());
+
+  //read data
+  let data = initTasks() as Task[];
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      setTasks(data);
+    }
+  }, [data]);
+
   const [isChecked, setIsChecked] = useState(true);
   let columnWidth = 60;
   if (view === ViewMode.Month) {
@@ -18,6 +28,7 @@ export default function App() {
   const handleTaskChange = (task: Task) => {
     console.log("On date change Id:" + task.id);
     let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
+    console.log(task);
     if (task.project) {
       const [start, end] = getStartEndDateForProject(newTasks, task.project);
       const project =
@@ -49,7 +60,7 @@ export default function App() {
   };
 
   const handleDblClick = (task: Task) => {
-    alert("On Double Click event Id:" + task.id);
+    alert("Doble Click event:" + task.id);
   };
 
   const handleSelect = (task: Task, isSelected: boolean) => {
@@ -61,6 +72,9 @@ export default function App() {
     console.log("On expander click Id:" + task.id);
   };
 
+  if (tasks.length === 0) {
+    return <div>No tasks</div>;
+  }
   return (
     <div>
       <ViewSwitcher
@@ -86,3 +100,19 @@ export default function App() {
     </div>
   );
 }
+
+/*
+<Gantt
+        tasks={tasks}
+        viewMode={view}
+        onDateChange={handleTaskChange}
+        onDelete={handleTaskDelete}
+        onProgressChange={handleProgressChange}
+        onDoubleClick={handleDblClick}
+        onSelect={handleSelect}
+        onExpanderClick={handleExpanderClick}
+        listCellWidth={isChecked ? "155px" : ""}
+        ganttHeight={300}
+        columnWidth={columnWidth}
+      />
+*/
