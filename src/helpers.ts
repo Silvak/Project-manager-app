@@ -9,6 +9,7 @@ export const initTasks = () => {
   //READ PROJECTS FROM LOCAL STORAGE
   useEffect(() => {
     let localData = JSON.parse(data || "[]");
+    //console.log("helpers:", localData);
 
     if (localData.length > 0) {
       let setNewDataList = [];
@@ -21,8 +22,8 @@ export const initTasks = () => {
           end: end,
           name: item.name,
           id: item.id,
-          progress: 50,
-          type: "project",
+          progress: item.progress,
+          type: item.type,
           hideChildren: false,
         };
         setNewDataList.push(task as never);
@@ -56,6 +57,7 @@ export const getStartEndDateForProject = (tasks: Task[], projectId: string) => {
   return [start, end];
 };
 
+/*
 let task_test = [
   {
     start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
@@ -136,3 +138,4 @@ let task_test = [
     type: "task",
   },
 ];
+*/

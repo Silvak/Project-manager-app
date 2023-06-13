@@ -7,6 +7,7 @@ import { updateDoc, doc } from "firebase/firestore";
  * @param {object} playload - Object to be updated
  **/
 const useUpdate = async (docName, id, playload) => {
+  //console.log(playload);
   await updateDoc(doc(db, docName, id), playload);
 };
 

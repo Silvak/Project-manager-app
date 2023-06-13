@@ -5,13 +5,15 @@ import { collection, onSnapshot, query, getDocs } from "firebase/firestore";
 /**
  * read data from a collection
  **/
-const useRead = () => {
+const useRead = (docName) => {
   const [data, setData] = useState([]);
 
   /**
    * @param {string} docName - Name of the collection
    **/
-  const getData = async (docName) => {
+  const getData = (docNameQuery) => {};
+
+  useEffect(() => {
     const q = query(collection(db, docName));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -21,10 +23,8 @@ const useRead = () => {
       });
       setData(projectsArr);
     });
-  };
 
-  useEffect(() => {
-    getData("projects");
+    return () => unsubscribe();
   }, []);
 
   return data;

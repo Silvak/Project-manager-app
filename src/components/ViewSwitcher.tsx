@@ -2,6 +2,12 @@ import React from "react";
 import "gantt-task-react/dist/index.css";
 import { ViewMode } from "gantt-task-react";
 
+const style = {
+  container:
+    "w-[400px] flex flex-row flex-wrap gap-2 justify-between items-center bg-white p-2 rounded-md shadow-md mt-4",
+  button: "border border-gray-300 rounded-md px-2 py-1",
+};
+
 type ViewSwitcherProps = {
   isChecked: boolean;
   onViewListChange: (isChecked: boolean) => void;
@@ -14,15 +20,15 @@ export const ViewSwitcher: React.SFC<ViewSwitcherProps> = ({
   isChecked,
 }) => {
   return (
-    <div className="ViewContainer">
+    <div className={style.container}>
       <button
-        className="Button"
+        className={style.button}
         onClick={() => onViewModeChange(ViewMode.QuarterDay)}
       >
         Quarter of Day
       </button>
       <button
-        className="Button"
+        className={style.button}
         onClick={() => onViewModeChange(ViewMode.HalfDay)}
       >
         Half of Day
@@ -31,13 +37,13 @@ export const ViewSwitcher: React.SFC<ViewSwitcherProps> = ({
         Day
       </button>
       <button
-        className="Button"
+        className={style.button}
         onClick={() => onViewModeChange(ViewMode.Week)}
       >
         Week
       </button>
       <button
-        className="Button"
+        className={style.button}
         onClick={() => onViewModeChange(ViewMode.Month)}
       >
         Month

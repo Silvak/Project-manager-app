@@ -6,18 +6,15 @@ const currentDate = new Date();
  **/
 export const projectModel = (input) => {
   const payload = {
-    start: new Date(2020, 1, 2),
-    end: new Date(2020, 2, 2),
+    start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+    end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 2),
     name: input,
     id: "Task 0",
+    progress: 45,
     type: "task",
-    progress: 10,
-    isDisabled: true,
-    styles: {
-      progressColor: "#ffbb54",
-      progressSelectedColor: "#ff9e0d",
-    },
     completed: false,
+    typeInternal: "task",
+    hideChildren: false,
   };
   return payload;
 };
