@@ -4,7 +4,7 @@ import { ViewMode } from "gantt-task-react";
 
 const style = {
   container:
-    "w-[400px] flex flex-row flex-wrap gap-2 justify-between items-center bg-white p-2 rounded-md shadow-md mt-4",
+    "w-full flex flex-row flex-wrap gap-2 justify-between items-center p-2 rounded-md mt-4 border border-gray-300",
   button: "border border-gray-300 rounded-md px-2 py-1",
 };
 

@@ -86,19 +86,16 @@ export default function GanttChart() {
   }
   return (
     <div>
-      <ViewSwitcher
-        onViewModeChange={(viewMode: ViewMode) => setView(viewMode)}
-        onViewListChange={setIsChecked}
-        isChecked={isChecked}
-      />
-
-      <h3>Gantt With Limited Height</h3>
       <Gantt
         tasks={tasks}
         viewMode={view}
         listCellWidth={isChecked ? "155px" : ""}
-        ganttHeight={300}
         onDoubleClick={handleDblClick}
+      />
+      <ViewSwitcher
+        onViewModeChange={(viewMode: ViewMode) => setView(viewMode)}
+        onViewListChange={setIsChecked}
+        isChecked={isChecked}
       />
     </div>
   );

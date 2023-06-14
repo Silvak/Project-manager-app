@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import Epic from "./Epic";
 //hooks
+import useInput from "../hooks/useInput";
 import useCreate from "../hooks/useCreate";
 import useUpdate from "../hooks/useUpdate";
 import useDelete from "../hooks/useDelete";
@@ -9,26 +9,31 @@ import useRead from "../hooks/useRead";
 import { projectModel } from "../models/models";
 
 const style = {
-  bg: `h-screen w-screen bg-gray-100`, //<< "w-screen" can cause a problem in the general width of the application
-  form: `flex items-center gap-2`,
-  button: `hover:bg-gray-200 rounded-sm px-6 py-1 flex items-center gap-1`,
-  container: `bg-white w-[400px] p-4 rounded-md shadow-md`,
+  container: `w-full`,
+  form: {
+    container: `flex items-center gap-2`,
+    button: `hover:bg-gray-200 h-[40px]  w-full md:w-[200px] pl-3 pr-2 py-1 rounded-sm border border=gray-300 flex items-center gap-1`,
+    input: `border border-gray-300 h-[40px] w-full md:w-[200px] rounded-sm px-2 py-1  focus:outline-none focus:ring-1 focus:ring-blue-400 z-20`,
+    inputExit: `fixed w-full h-full top-0 left-0 z-10`,
+  },
   tasks: `mt-4 space-y-2 `,
 };
 
 function CreateTask() {
   const [projects, setProjects] = useState([]);
-  const [input, setInput] = useState("");
+  const [showInput, setShowInput] = useState(false);
+  const inputProps = useInput("", "text");
 
   //CREATE PROJECTS
   const createProject = async (e) => {
     e.preventDefault(e);
-    if (input === "") {
+    if (inputProps.value === "") {
       alert("No puedes crear un epic vacio");
       return;
     } else {
-      useCreate("projects", projectModel(input));
-      setInput("");
+      useCreate("projects", projectModel(inputProps.value));
+      inputProps.clear();
+      setShowInput(false);
     }
   };
 
@@ -54,28 +59,50 @@ function CreateTask() {
     useDelete("projects", id);
   };
 
+  //HANDLE SHOW INPUT
+  const handleShowInput = () => {
+    setShowInput(!showInput);
+  };
+
   return (
-    <>
-      {/* Create Epic Compoenent  */}
+    <div>
       <div className={style.container}>
-        <h3>Insert a new task</h3>
-
-        <form onSubmit={createProject} className={style.form}>
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            type="text"
-            placeholder="Que debes hacer?"
-          />
-          <button className={style.button}>
-            <span>
-              <AiOutlinePlus />
-            </span>
-            <span>Crear Epic</span>
-          </button>
+        <form onSubmit={createProject} className={style.form.container}>
+          {showInput ? (
+            <>
+              <input
+                className={style.form.input}
+                {...inputProps}
+                type="text"
+                placeholder="¿Que se debe hacer?"
+              />
+              <div onClick={handleShowInput} className={style.form.inputExit}>
+                {" "}
+              </div>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={handleShowInput}
+              className={style.form.button}
+            >
+              <span>
+                <AiOutlinePlus />
+              </span>
+              <span>Crear Epic</span>
+            </button>
+          )}
         </form>
+      </div>
+    </div>
+  );
+}
 
-        <ul className={style.tasks}>
+export default CreateTask;
+
+/*
+
+<ul className={style.tasks}>
           {projects.map((project, index) => (
             <Epic
               key={index}
@@ -89,9 +116,5 @@ function CreateTask() {
         {data.length > 0 && (
           <p className={style.count}>You have {projects.length} todos</p>
         )}
-      </div>
-    </>
-  );
-}
 
-export default CreateTask;
+*/
