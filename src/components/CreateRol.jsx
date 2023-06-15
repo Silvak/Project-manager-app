@@ -9,13 +9,6 @@ import useDelete from "../hooks/useDelete";
 import useRead from "../hooks/useRead";
 import { membersModel } from "../models/models";
 
-const style = {
-  container: `flex justify-betwent items-center w-full`,
-  tasks: `mt-4 space-y-2 `,
-  member: `flex justify-center items-center w-[36px]  h-[36px] hover:z-30 rounded-full border-2 border-white select-none cursor-pointer`,
-  listmember: `grid grid-cols-6 gap-1 items-center`,
-};
-
 const styleModal = {
   container: `fixed grid place-content-center top-0 left-0 w-full h-full bg-[#6A89C3]/40 z-[100]`,
   button: `w-[36px] h-[36px] rounded-full bg-gray-200`,
@@ -142,6 +135,14 @@ const CustomForm = ({ onClose }) => {
   );
 };
 
+const style = {
+  container: `flex justify-betwent items-center w-full`,
+  containerModal: `flex justify-end  md:justify-start items-center w-full ml-4`,
+  tasks: `mt-4 space-y-2 `,
+  member: `flex justify-center items-center w-[36px]  h-[36px] hover:z-30 rounded-full border-2 border-white select-none cursor-pointer`,
+  listmember: `grid gap-1 items-center`,
+};
+
 //MAIN COMPONENT
 function CreateRol() {
   const [membersList, setMembersList] = useState([]);
@@ -179,7 +180,14 @@ function CreateRol() {
 
   return (
     <div className={style.container}>
-      <ul className={style.listmember}>
+      <ul
+        className={style.listmember}
+        style={{
+          gridTemplateColumns: `repeat(${
+            membersList.length <= 6 ? membersList.length : 6
+          }, minmax(0, 1fr))`,
+        }}
+      >
         {membersList.slice(0, 6).map((member, index) => (
           <div
             style={{
@@ -196,8 +204,12 @@ function CreateRol() {
           </div>
         ))}
       </ul>
-      <div className={style.container}>
-        <Modal buttonComponent={CustomButton} contentComponent={CustomForm} />
+      <div className={style.containerModal}>
+        <Modal
+          btnActive={true}
+          buttonComponent={CustomButton}
+          contentComponent={CustomForm}
+        />
       </div>
     </div>
   );

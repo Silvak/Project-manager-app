@@ -32,7 +32,7 @@ function CreateTask() {
       return;
     } else {
       useCreate("projects", projectModel(inputProps.value));
-      inputProps.clear();
+      inputProps.reset();
       setShowInput(false);
     }
   };
@@ -72,7 +72,8 @@ function CreateTask() {
             <>
               <input
                 className={style.form.input}
-                {...inputProps}
+                value={inputProps.value}
+                onChange={inputProps.onChange}
                 type="text"
                 placeholder="¿Que se debe hacer?"
               />

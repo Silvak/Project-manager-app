@@ -20,7 +20,7 @@ function Projects() {
   const data = useRead("projects");
   useEffect(() => {
     setProjects(data);
-  }, [data.length]);
+  }, [data.length, data]);
 
   return (
     <div>
@@ -29,7 +29,7 @@ function Projects() {
         <h2 className={style.titlebar.title}>Hoja de ruta</h2>
       </div>
 
-      <div className="flex justify-start flex-col-reverse md:flex-row gap-4 mb-8">
+      <div className="flex justify-start flex-col-reverse md:flex-row gap-4 mb-4">
         <CreateTask />
         <CreateRol />
       </div>

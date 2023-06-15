@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "gantt-task-react/dist/index.css";
 import { ViewMode } from "gantt-task-react";
 
 const style = {
   container:
-    "w-full flex flex-row flex-wrap gap-2 justify-between items-center p-2 rounded-md mt-4 border border-gray-300",
-  button: "border border-gray-300 rounded-md px-2 py-1",
+    "w-full flex flex-wrap justify-between items-center rounded-md mb-8 gap-4",
+  buttonContainer:
+    "flex rounded-md shadow-sm border border-gray-200 bg-white overflow-hidden h-[40px]",
+  button: "h-full hover:bg-gray-100 px-4 py-2 duration-100 ease-in-out",
+  switch:
+    "flex items-center justify-center h-full bg-white rounded-md h-[40px] shadow-sm border border-gray-200 px-4 py-2",
+  toggle: "flex items-center justify-center h-full mr-1",
 };
 
 type ViewSwitcherProps = {
@@ -19,46 +24,43 @@ export const ViewSwitcher: React.SFC<ViewSwitcherProps> = ({
   onViewListChange,
   isChecked,
 }) => {
+  const [activeButton, setActiveButton] = useState(ViewMode.HalfDay);
+
+  const handleButtonClick = (viewMode: ViewMode) => {
+    onViewModeChange(viewMode);
+    setActiveButton(viewMode);
+  };
+
+  const renderButton = (viewMode: ViewMode, label: string) => (
+    <button
+      className={`${style.button} ${
+        activeButton === viewMode ? "bg-blue-600 text-white" : ""
+      }`}
+      onClick={() => handleButtonClick(viewMode)}
+    >
+      {label}
+    </button>
+  );
+
   return (
     <div className={style.container}>
-      <button
-        className={style.button}
-        onClick={() => onViewModeChange(ViewMode.QuarterDay)}
-      >
-        Quarter of Day
-      </button>
-      <button
-        className={style.button}
-        onClick={() => onViewModeChange(ViewMode.HalfDay)}
-      >
-        Half of Day
-      </button>
-      <button className="Button" onClick={() => onViewModeChange(ViewMode.Day)}>
-        Day
-      </button>
-      <button
-        className={style.button}
-        onClick={() => onViewModeChange(ViewMode.Week)}
-      >
-        Week
-      </button>
-      <button
-        className={style.button}
-        onClick={() => onViewModeChange(ViewMode.Month)}
-      >
-        Month
-      </button>
-
-      <div className="Switch">
-        <label className="Switch_Toggle">
+      <div className={style.buttonContainer}>
+        {renderButton(ViewMode.HalfDay, "Mitad del dia")}
+        {renderButton(ViewMode.Day, "Día")}
+        {renderButton(ViewMode.Week, "Semana")}
+        {renderButton(ViewMode.Month, "Mes")}
+      </div>
+      <div className={style.switch}>
+        <label className={style.toggle}>
           <input
             type="checkbox"
+            className="w-4 h-4 cursor-pointer"
             defaultChecked={isChecked}
             onClick={() => onViewListChange(!isChecked)}
           />
           <span className="Slider" />
         </label>
-        Show Task List
+        Mostrar lista
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { initTasks, getStartEndDateForProject } from "../helpers";
 import { ViewSwitcher } from "./ViewSwitcher";
 import useUpdate from "../hooks/useUpdate";
+import UpdateTask from "./UpdateTask";
 
 export default function GanttChart() {
   const [view, setView] = useState<ViewMode>(ViewMode.Day);
@@ -68,8 +69,13 @@ export default function GanttChart() {
     console.log("On progress change Id:" + task.id);
   };
 
+  const [currentId, setCurrenId] = useState({});
+
   const handleDblClick = (task: Task) => {
-    alert("Doble Click event:" + task.id);
+    //alert("Doble Click event:" + task.id);
+    //console.log("Doble Click event:", task);
+    handleOpen();
+    setCurrenId(task);
   };
 
   const handleSelect = (task: Task, isSelected: boolean) => {
@@ -81,23 +87,33 @@ export default function GanttChart() {
     console.log("On expander click Id:" + task.id);
   };
 
+  //Modal update open
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
   if (tasks.length === 0) {
     return <div>No tasks</div>;
   }
   return (
-    <div>
-      <Gantt
-        tasks={tasks}
-        viewMode={view}
-        listCellWidth={isChecked ? "155px" : ""}
-        onDoubleClick={handleDblClick}
-      />
+    <>
       <ViewSwitcher
         onViewModeChange={(viewMode: ViewMode) => setView(viewMode)}
         onViewListChange={setIsChecked}
         isChecked={isChecked}
       />
-    </div>
+      <div className="border border-gray-200 rounded-sm overflow-hidden">
+        <Gantt
+          tasks={tasks}
+          viewMode={view}
+          listCellWidth={isChecked ? "155px" : ""}
+          onDoubleClick={handleDblClick}
+        />
+      </div>
+      <UpdateTask open={open} task={currentId} />
+    </>
   );
 }
 
