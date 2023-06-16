@@ -2,7 +2,7 @@ import React from "react";
 
 function Loading() {
   return (
-    <div className="grid place-content-center h-full">
+    <div className=" grid place-content-center h-full">
       <div role="status">
         <svg
           aria-hidden="true"

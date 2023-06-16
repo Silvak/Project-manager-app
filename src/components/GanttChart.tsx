@@ -104,6 +104,7 @@ export default function GanttChart() {
         onViewListChange={setIsChecked}
         isChecked={isChecked}
       />
+
       <div className="border border-gray-200 rounded-sm overflow-hidden">
         <Gantt
           tasks={tasks}
@@ -112,6 +113,7 @@ export default function GanttChart() {
           onDoubleClick={handleDblClick}
         />
       </div>
+
       <UpdateTask open={open} task={currentId} />
     </>
   );

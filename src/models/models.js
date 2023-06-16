@@ -32,8 +32,8 @@ export const projectModel = (input) => {
     tags: "",
     id: "",
     state: "Por hacer",
-    progress: 10,
-    type: "project",
+    progress: 2,
+    type: "task",
     typeInternal: "task",
     styles: {
       progressColor: generarColorPastel().colorFondo,
@@ -50,7 +50,7 @@ export const taskModel = (input) => {
     name: input,
     id: "Task 0",
     type: "task",
-    progress: 10,
+    progress: 0,
     isDisabled: true,
     styles: {
       progressColor: "#ffbb54",

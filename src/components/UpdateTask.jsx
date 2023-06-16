@@ -6,6 +6,7 @@ import useUpdate from "../hooks/useUpdate";
 import useDelete from "../hooks/useDelete";
 import useRead from "../hooks/useRead";
 import useDate from "../hooks/useDate";
+import InputColor from "react-input-color";
 
 const styleModal = {
   container:
@@ -32,7 +33,8 @@ const styleModal = {
   },
 };
 
-const CustomForm = ({ onClose, data }) => {
+const CustomForm = ({ onClose, data, members }) => {
+  const [color, setColor] = React.useState({});
   const { dateFormater, currentTimeZone } = useDate();
 
   const inputState = useInput(data.state, "text");
@@ -68,6 +70,10 @@ const CustomForm = ({ onClose, data }) => {
         tags: inputTags.value,
         start: dateByZone.start,
         end: dateByZone.end,
+        progress: inputState.value === "Por hacer" ? 0 : 100,
+        styles: {
+          progressColor: color.hex,
+        },
       });
       onClose();
     }
@@ -90,12 +96,13 @@ const CustomForm = ({ onClose, data }) => {
         </div>
 
         <div className="flex flex-col overflow-x-hidden px-6 pt-4">
-          <div className="flex justify-start items-end gap-2 mt-2 mb-6">
-            <div
-              style={{ background: data.styles.progressColor }}
-              className="h-[32px] w-[32px]  border borde-gray-300 rounded-md"
-            ></div>
+          <div className="flex justify-between items-end gap-2 mt-2 mb-6">
             <h1 className=" text-2xl font-bold text-[#172B4D]">{data.name}</h1>
+            <InputColor
+              initialValue={data.styles.progressColor}
+              onChange={setColor}
+              placement="right"
+            />
           </div>
 
           <div>
@@ -157,9 +164,11 @@ const CustomForm = ({ onClose, data }) => {
               onChange={inputRes.onChange}
             >
               <option>Selecciona un miembro</option>
-              <option>Juan</option>
-              <option>Luis</option>
-              <option>Carla</option>
+              {members.map((member) => (
+                <option key={member.id}>
+                  {member.name} - <span>{member.rol}</span>
+                </option>
+              ))}
             </select>
           </div>
 
@@ -176,6 +185,14 @@ const CustomForm = ({ onClose, data }) => {
             >
               <option>Selecciona una etiqueta</option>
               <option>Prioritario</option>
+              <option>Backend</option>
+              <option>Frontend</option>
+              <option>Base de datos</option>
+              <option>Despliegue</option>
+              <option>Testing</option>
+              <option>Documentación</option>
+              <option>Seguridad</option>
+
               <option>Diseño</option>
             </select>
           </div>
@@ -240,13 +257,20 @@ const style = {
 
 function UpdateTask(props) {
   const [task, setTask] = useState({});
+  const [members, setMembers] = useState({});
 
   const data = useRead("projects");
+  let dataMembers = useRead("members");
 
-  useEffect(() => {
-    const taskFilterById = data.filter((item) => item.id === props.task.id);
-    setTask(taskFilterById);
-  }, [data, props.task]);
+  useEffect(
+    () => {
+      const taskFilterById = data.filter((item) => item.id === props.task.id);
+      setTask(taskFilterById);
+      setMembers(dataMembers);
+    },
+    [data, props.task],
+    dataMembers
+  );
 
   return (
     <div className={style.container}>
@@ -255,7 +279,8 @@ function UpdateTask(props) {
           btnActive={false}
           stateOpen={props.open}
           contentComponent={CustomForm}
-          data={task[0]}
+          task={task[0]}
+          members={members}
         />
       </div>
     </div>

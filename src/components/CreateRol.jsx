@@ -55,7 +55,7 @@ const CustomForm = ({ onClose }) => {
     } else {
       useCreate(
         "members",
-        membersModel(inputName.value, inputRol.value, inputEmail.value)
+        membersModel(inputName.value, inputEmail.value, inputRol.value)
       );
       inputName.reset();
       inputRol.reset();
@@ -116,9 +116,12 @@ const CustomForm = ({ onClose }) => {
           onChange={inputRol.onChange}
         >
           <option>Selecciona un rol</option>
-          <option>Scrum Master</option>
-          <option>Product Owner</option>
-          <option>Developer</option>
+          <option>Desarrollador</option>
+          <option>Diseñador UX/UI</option>
+          <option>Analista</option>
+          <option>Project Manager</option>
+          <option>Tester</option>
+          <option>Otro</option>
         </select>
 
         <div className={styleModal.form.buttonbox}>

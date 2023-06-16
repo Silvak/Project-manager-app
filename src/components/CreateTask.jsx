@@ -90,7 +90,7 @@ function CreateTask() {
               <span>
                 <AiOutlinePlus />
               </span>
-              <span>Crear Epic</span>
+              <span>Crear Proyecto</span>
             </button>
           )}
         </form>

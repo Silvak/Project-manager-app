@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 const Modal = ({
   btnActive: btnActive,
   stateOpen: stateOpen,
-  data: data,
+  task: task,
+  members: members,
   buttonComponent: ButtonComponent,
   contentComponent: ContentComponent,
 }) => {
@@ -25,7 +26,8 @@ const Modal = ({
           <div className="modal-content">
             <ContentComponent
               onClose={toggleModal}
-              data={data != null ? data : ""}
+              data={task != null ? task : ""}
+              members={members != null ? members : ""}
             />
           </div>
         </div>
