@@ -4,6 +4,8 @@ import Loading from "../components/Loading";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import CreateRol from "../components/CreateRol";
 import useDelete from "../hooks/useDelete";
+import { memoModel } from "../models/models";
+import useCreate from "../hooks/useCreate";
 
 const style = {
   gantt: ``,
@@ -35,16 +37,20 @@ function Members() {
     }
   }, [data]);
 
-  const deleteProject = async (id) => {
+  const deleteProject = async (id, member) => {
     useDelete("members", id);
+    useCreate("history", memoModel(`${member}`, "Delete Member"));
     onClose();
   };
 
+  if (members.length === 0 && !data[0]) {
+    return <Loading />;
+  }
   return (
     <div>
       <div className={style.titlebar.container}>
         <a href={style.titlebar.links}>Proyectos</a>
-        <h2 className={style.titlebar.title}>Members</h2>
+        <h2 className={style.titlebar.title}>Miembros</h2>
       </div>
 
       <div className="mb-8">
@@ -81,7 +87,7 @@ function Members() {
             <p className={style.table.p2}>{member.email}</p>
             <p className={style.table.p3}>{member.rol}</p>
             <button
-              onClick={() => deleteProject(member.id)}
+              onClick={() => deleteProject(member.id, member.name)}
               className={style.table.button}
             >
               <span>

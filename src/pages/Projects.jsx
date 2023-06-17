@@ -3,6 +3,7 @@ import GanttChart from "../components/GanttChart";
 import useRead from "../hooks/useRead";
 import CreateTask from "../components/CreateTask";
 import CreateRol from "../components/CreateRol";
+import Loading from "../components/Loading";
 
 const style = {
   gantt: ``,

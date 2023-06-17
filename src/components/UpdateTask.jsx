@@ -6,7 +6,9 @@ import useUpdate from "../hooks/useUpdate";
 import useDelete from "../hooks/useDelete";
 import useRead from "../hooks/useRead";
 import useDate from "../hooks/useDate";
+import useCreate from "../hooks/useCreate";
 import InputColor from "react-input-color";
+import { memoModel } from "../models/models";
 
 const styleModal = {
   container:
@@ -81,6 +83,7 @@ const CustomForm = ({ onClose, data, members }) => {
 
   const deleteProject = async (id) => {
     useDelete("projects", id);
+    useCreate("history", memoModel(`${data.name}`, "Delete Project"));
     onClose();
   };
 
@@ -96,13 +99,13 @@ const CustomForm = ({ onClose, data, members }) => {
         </div>
 
         <div className="flex flex-col overflow-x-hidden px-6 pt-4">
-          <div className="flex justify-between items-end gap-2 mt-2 mb-6">
-            <h1 className=" text-2xl font-bold text-[#172B4D]">{data.name}</h1>
+          <div className="flex justify-start items-center  gap-3 mt-2 mb-6">
             <InputColor
               initialValue={data.styles.progressColor}
               onChange={setColor}
               placement="right"
             />
+            <h1 className=" text-2xl font-bold text-[#172B4D]">{data.name}</h1>
           </div>
 
           <div>

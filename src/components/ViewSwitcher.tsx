@@ -24,7 +24,7 @@ export const ViewSwitcher: React.SFC<ViewSwitcherProps> = ({
   onViewListChange,
   isChecked,
 }) => {
-  const [activeButton, setActiveButton] = useState(ViewMode.HalfDay);
+  const [activeButton, setActiveButton] = useState(ViewMode.Week);
 
   const handleButtonClick = (viewMode: ViewMode) => {
     onViewModeChange(viewMode);
@@ -34,7 +34,7 @@ export const ViewSwitcher: React.SFC<ViewSwitcherProps> = ({
   const renderButton = (viewMode: ViewMode, label: string) => (
     <button
       className={`${style.button} ${
-        activeButton === viewMode ? "bg-blue-600 text-white" : ""
+        activeButton === viewMode ? "bg-blue-500 text-white" : ""
       }`}
       onClick={() => handleButtonClick(viewMode)}
     >

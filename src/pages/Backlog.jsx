@@ -25,43 +25,52 @@ const style = {
 };
 
 function Backlog() {
-  const [members, setMembers] = useState([]);
+  const [history, setHistory] = useState([]);
 
-  let data = useRead("members");
+  let data = useRead("history");
 
   useEffect(() => {
     if (data) {
-      setMembers(data);
+      setHistory(data);
     }
   }, [data]);
 
   const deleteProject = async (id) => {
-    useDelete("members", id);
-    onClose();
+    useDelete("history", id);
   };
 
+  if (history.length === 0 && !data[0]) {
+    return <Loading />;
+  }
   return (
     <div>
       <div className={style.titlebar.container}>
         <a href={style.titlebar.links}>Proyectos</a>
-        <h2 className={style.titlebar.title}>History</h2>
+        <h2 className={style.titlebar.title}>Historial</h2>
       </div>
 
       <div className={style.table.head}>
-        <p className="w-1/4">Name</p>
-        <p className={style.table.p2}>Email</p>
-        <p className={style.table.p3}>Rol</p>
+        <p className="w-1/4">Descripción</p>
+        <p className={style.table.p2}>Acción</p>
+        <p className={style.table.p3}>Fecha</p>
         <p className=""></p>
       </div>
 
       <div className={style.table.body}>
-        {members.map((member, index) => (
+        {history.map((item, index) => (
           <div className={style.table.item} key={index}>
-            <p className="w-1/4">Descripcion</p>
-            <p className={style.table.p2}>action</p>
-            <p className={style.table.p3}>20-15-2023</p>
+            <p className="w-1/4">{item.desc}</p>
+            <p className={style.table.p2}>
+              {" "}
+              <span className="bg-gray-100 px-3 py-1 rounded-full">
+                {item.action}
+              </span>{" "}
+            </p>
+            <p className={style.table.p3}>
+              {new Date(item.date.seconds * 1000).toDateString()}
+            </p>
             <button
-              onClick={() => deleteProject(member.id)}
+              onClick={() => deleteProject(item.id)}
               className={style.table.button}
             >
               <span>

@@ -9,7 +9,7 @@ import { MdAutoAwesomeMotion } from "react-icons/md";
 
 const style = {
   container: `flex flex-col justify-between h-full  overflow-hidden`, // CHANGED << "w-screen" cause a problem in the general width of the application
-  item: `h-[40px] flex justify-start items-center rounded-sm text-[#172B4D] hover:bg-[#E6EFFC] pl-2`,
+  item: `h-[40px] flex justify-start items-center rounded-sm text-[#172B4D] whitespace-nowrap hover:bg-[#E6EFFC] pl-2`,
   current: {
     backgroundColor: "#E6EFFC",
     color: "#0052CC",
@@ -25,7 +25,7 @@ const style = {
 const path = [
   { name: "Hoja de ruta", path: "/", icon: <RiBarChartHorizontalFill /> },
   { name: "Miembros", path: "/members", icon: <HiUsers /> },
-  { name: "Etiquetas", path: "/tags", icon: <AiFillTag /> },
+  //{ name: "Etiquetas", path: "/tags", icon: <AiFillTag /> },
   { name: "Memo", path: "/memo", icon: <RiBookmarkFill /> },
   { name: "Historial", path: "/history", icon: <MdAutoAwesomeMotion /> },
 ];
