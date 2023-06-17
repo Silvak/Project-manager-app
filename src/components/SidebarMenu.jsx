@@ -2,8 +2,10 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 //icons
 import { RiBarChartHorizontalFill } from "react-icons/ri";
-import { SiPagekit } from "react-icons/si";
 import { HiUsers } from "react-icons/hi";
+import { AiFillTag } from "react-icons/ai";
+import { RiBookmarkFill } from "react-icons/ri";
+import { MdAutoAwesomeMotion } from "react-icons/md";
 
 const style = {
   container: `flex flex-col justify-between h-full  overflow-hidden`, // CHANGED << "w-screen" cause a problem in the general width of the application
@@ -22,8 +24,10 @@ const style = {
 
 const path = [
   { name: "Hoja de ruta", path: "/", icon: <RiBarChartHorizontalFill /> },
-  { name: "Backlog", path: "/backlog", icon: <SiPagekit /> },
-  { name: "Members", path: "/members", icon: <HiUsers /> },
+  { name: "Miembros", path: "/members", icon: <HiUsers /> },
+  { name: "Etiquetas", path: "/tags", icon: <AiFillTag /> },
+  { name: "Memo", path: "/memo", icon: <RiBookmarkFill /> },
+  { name: "Historial", path: "/history", icon: <MdAutoAwesomeMotion /> },
 ];
 
 function SidebarMenu() {

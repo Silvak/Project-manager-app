@@ -71,3 +71,12 @@ export const membersModel = (name, email, rol) => {
   };
   return payload;
 };
+
+export const memoModel = (desc, action) => {
+  const payload = {
+    desc: desc,
+    action: action,
+    date: new Date(Date.now()),
+  };
+  return payload;
+};

@@ -12,6 +12,8 @@ import Backlog from "./pages/Backlog.jsx";
 import Members from "./pages/Members.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/Login.jsx";
+import Memo from "./pages/Memo.jsx";
+import Tags from "./pages/Tags.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,8 +23,10 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { path: "/", element: <Projects /> },
-      { path: "/backlog", element: <Backlog /> },
+      { path: "/history", element: <Backlog /> },
       { path: "/members", element: <Members /> },
+      { path: "/memo", element: <Memo /> },
+      { path: "/tags", element: <Tags /> },
     ],
   },
   {

@@ -7,7 +7,8 @@ import useCreate from "../hooks/useCreate";
 import useUpdate from "../hooks/useUpdate";
 import useDelete from "../hooks/useDelete";
 import useRead from "../hooks/useRead";
-import { membersModel } from "../models/models";
+
+import { membersModel, memoModel } from "../models/models";
 
 const styleModal = {
   container: `fixed grid place-content-center top-0 left-0 w-full h-full bg-[#6A89C3]/40 z-[100]`,
@@ -53,13 +54,18 @@ const CustomForm = ({ onClose }) => {
       alert("No puedes crear un epic vacio");
       return;
     } else {
+      //create
       useCreate(
         "members",
         membersModel(inputName.value, inputEmail.value, inputRol.value)
       );
+      //memo
+      useCreate("history", memoModel(`${inputName.value}`, "Add member"));
+
       inputName.reset();
       inputRol.reset();
       inputEmail.reset();
+
       onClose();
     }
   };

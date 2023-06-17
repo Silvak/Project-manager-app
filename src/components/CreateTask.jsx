@@ -6,7 +6,7 @@ import useCreate from "../hooks/useCreate";
 import useUpdate from "../hooks/useUpdate";
 import useDelete from "../hooks/useDelete";
 import useRead from "../hooks/useRead";
-import { projectModel } from "../models/models";
+import { projectModel, memoModel } from "../models/models";
 
 const style = {
   container: `w-full`,
@@ -32,6 +32,8 @@ function CreateTask() {
       return;
     } else {
       useCreate("projects", projectModel(inputProps.value));
+      useCreate("history", memoModel(`${inputProps.value}`, "Add Project"));
+
       inputProps.reset();
       setShowInput(false);
     }
