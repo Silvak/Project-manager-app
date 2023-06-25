@@ -32,7 +32,10 @@ export const projectModel = (input) => {
     tags: "",
     id: "",
     state: "Por hacer",
-    progress: 1,
+    memos: {
+      list: [],
+    },
+    progress: 0,
     type: "task",
     typeInternal: "task",
     styles: {

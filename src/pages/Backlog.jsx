@@ -39,9 +39,10 @@ function Backlog() {
     useDelete("history", id);
   };
 
+  /*
   if (history.length === 0 && !data[0]) {
     return <Loading />;
-  }
+  }*/
   return (
     <div>
       <div className={style.titlebar.container}>
@@ -57,28 +58,41 @@ function Backlog() {
       </div>
 
       <div className={style.table.body}>
-        {history.map((item, index) => (
-          <div className={style.table.item} key={index}>
-            <p className="w-1/4">{item.desc}</p>
-            <p className={style.table.p2}>
-              {" "}
-              <span className="bg-gray-100 px-3 py-1 rounded-full">
-                {item.action}
-              </span>{" "}
-            </p>
-            <p className={style.table.p3}>
-              {new Date(item.date.seconds * 1000).toDateString()}
-            </p>
-            <button
-              onClick={() => deleteProject(item.id)}
-              className={style.table.button}
-            >
-              <span>
-                <RiDeleteBin7Line />
-              </span>
-            </button>
+        {history.length == 0 ? (
+          <div className="h-[48px] px-4 flex justify-center items-center text-sm text-gray-400">
+            {" "}
+            El historial está vacío{" "}
           </div>
-        ))}
+        ) : (
+          <>
+            {history.map((item, index) => (
+              <div className={style.table.item} key={index}>
+                <p className="w-1/4 whitespace-nowrap">
+                  {item.desc.length > 20
+                    ? `${item.desc.slice(0, 20)}...`
+                    : item.desc}
+                </p>
+                <p className={style.table.p2}>
+                  {" "}
+                  <span className="bg-gray-100 px-3 py-1 rounded-full">
+                    {item.action}
+                  </span>{" "}
+                </p>
+                <p className={style.table.p3}>
+                  {new Date(item.date.seconds * 1000).toDateString()}
+                </p>
+                <button
+                  onClick={() => deleteProject(item.id)}
+                  className={style.table.button}
+                >
+                  <span>
+                    <RiDeleteBin7Line />
+                  </span>
+                </button>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

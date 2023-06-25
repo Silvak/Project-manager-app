@@ -6,7 +6,7 @@ const style = {
   container:
     "w-full flex flex-wrap justify-between items-center rounded-md mb-8 gap-4",
   buttonContainer:
-    "flex rounded-md shadow-sm border border-gray-200 bg-white overflow-hidden h-[40px]",
+    "flex  rounded-md shadow-sm border border-gray-200 bg-white overflow-hidden h-[40px]",
   button: "h-full hover:bg-gray-100 px-4 py-2 duration-100 ease-in-out",
   switch:
     "flex items-center justify-center h-full bg-white rounded-md h-[40px] shadow-sm border border-gray-200 px-4 py-2",
@@ -44,12 +44,6 @@ export const ViewSwitcher: React.SFC<ViewSwitcherProps> = ({
 
   return (
     <div className={style.container}>
-      <div className={style.buttonContainer}>
-        {renderButton(ViewMode.HalfDay, "Mitad del dia")}
-        {renderButton(ViewMode.Day, "Día")}
-        {renderButton(ViewMode.Week, "Semana")}
-        {renderButton(ViewMode.Month, "Mes")}
-      </div>
       <div className={style.switch}>
         <label className={style.toggle}>
           <input
@@ -60,7 +54,12 @@ export const ViewSwitcher: React.SFC<ViewSwitcherProps> = ({
           />
           <span className="Slider" />
         </label>
-        Mostrar lista
+        Lista
+      </div>
+      <div className={style.buttonContainer}>
+        {renderButton(ViewMode.Day, "Día")}
+        {renderButton(ViewMode.Week, "Semana")}
+        {renderButton(ViewMode.Month, "Mes")}
       </div>
     </div>
   );

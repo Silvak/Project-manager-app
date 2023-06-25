@@ -16,6 +16,7 @@ const style = {
     button: `hover:bg-gray-200 h-[40px]  w-full md:w-[200px] pl-3 pr-2 py-1 rounded-sm border border=gray-300 flex items-center gap-1`,
     input: `border border-gray-300 h-[40px] w-full md:w-[200px] rounded-sm px-2 py-1  focus:outline-none focus:ring-1 focus:ring-blue-400 z-20`,
     inputExit: `fixed w-full h-full top-0 left-0 z-10`,
+    createBtn: `flex items-center md:hidden hover:bg-gray-200 text-gray-800  active:bg-blue-500 active:text-white px-3 h-[40px] rounded-sm cursor-pointer z-30 border border-gray-300`,
   },
   tasks: `mt-4 space-y-2 `,
 };
@@ -81,9 +82,14 @@ function CreateTask() {
                 type="text"
                 placeholder="¿Que se debe hacer?"
               />
-              <div onClick={handleShowInput} className={style.form.inputExit}>
-                {" "}
-              </div>
+              <button type="submit" className={style.form.createBtn}>
+                Crear
+              </button>
+
+              <div
+                onClick={handleShowInput}
+                className={style.form.inputExit}
+              ></div>
             </>
           ) : (
             <button

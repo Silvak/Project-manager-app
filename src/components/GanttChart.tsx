@@ -105,13 +105,16 @@ export default function GanttChart() {
         isChecked={isChecked}
       />
 
-      <div className="border border-gray-200 rounded-sm overflow-hidden">
-        <Gantt
-          tasks={tasks}
-          viewMode={view}
-          listCellWidth={isChecked ? "155px" : ""}
-          onDoubleClick={handleDblClick}
-        />
+      <div className="border border-gray-200 rounded-sm  w-full  overflow-x-auto md:overflow-hidden">
+        <div className=" w-[720px] md:w-auto ">
+          <Gantt
+            tasks={tasks}
+            viewMode={view}
+            listCellWidth={isChecked ? "155px" : ""}
+            onClick={handleDblClick}
+            columnWidth={columnWidth}
+          />
+        </div>
       </div>
 
       <UpdateTask open={open} task={currentId} />

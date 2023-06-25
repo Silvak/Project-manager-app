@@ -234,6 +234,7 @@ const ShowMemo = ({ memos, projecId }) => {
         <ShowMemoItem
           element={element}
           index={index}
+          key={index}
           projecId={projecId}
           deleteMemo={deleteMemo}
         />
@@ -245,18 +246,21 @@ const ShowMemo = ({ memos, projecId }) => {
 const Memo = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [projects, setProjects] = useState([]);
-  const data = useRead("projects");
+  const data = useRead("projects") || [];
 
   useEffect(() => {
     const filteredProjects = data.filter((project) =>
       project.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
     setProjects(filteredProjects);
   }, [data, searchTerm]);
 
+  /* 
   if (projects.length === 0 && !data[0]) {
     return <Loading />;
-  }
+  } 
+  */
   return (
     <div>
       <div className={style.titlebar.container}>
@@ -270,7 +274,7 @@ const Memo = () => {
           placeholder="Buscar proyecto..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="h-[40px] w-1/3 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+          className="h-[40px] w-full  md:w-1/3 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
         />
       </div>
 

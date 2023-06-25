@@ -6,12 +6,12 @@ import { BiGift, BiGroup } from "react-icons/bi";
 import { AiOutlineMail } from "react-icons/ai";
 import { RiComputerLine } from "react-icons/ri";
 import { AiOutlineClose } from "react-icons/ai";
-import Modal from "./Modal";
+//import Modal from "./Modal";
 
 const Dropdown = (props) => {
   return (
-    <div className=" h-screen w-[380px] shadow-xl z-10 ">
-      <div className="flex flex-wrap items-center  w-full h-[38%] bg-gray-100 py-[20px] px-6 border-b ">
+    <div className=" h-screen w-[380px] shadow-md z-10 border-l border-gray-300">
+      <div className="flex flex-wrap items-center  w-full h-[38%] bg-white py-[20px] px-6  border-b border-gray-300">
         <div className="flex justify-center items-center w-[24%] h-[80px]">
           <div className="flex justify-center items-center h-[70px] w-[70px] bg-slate-400 rounded-sm overflow-hidden">
             {props.user.photoURL ? (
@@ -52,13 +52,12 @@ const Dropdown = (props) => {
           <h4 className="font-bold mb-1">SUSCRIPCIÓN</h4>
           <div className="flex justify-between mb-1 w-full">
             <p className="w-[70%]">Enterprise</p>
-            <p className="w-[20%]">
+            <div className="w-[20%]">
               <p className="text-blue-400 w-full text-right cursor-pointer">
                 {" "}
               </p>
-            </p>
+            </div>
           </div>
-          <p> </p>
         </div>
 
         <div className="flex flex-col gap-4 relative h-[62%] bg-white px-[25px] py-[15px] text-[12px]">
@@ -144,7 +143,7 @@ function Navbar() {
               <IoIosNotificationsOutline />
             </button>
             {isNotification ? (
-              <div className="fixed top-[46px] right-[2px] w-[98%] sm:w-[360px] h-[91.8%]  bg-white shadow-xl border border-[#c1c1c1] duration-200">
+              <div className="fixed top-[46px] right-[2px] w-[98%] sm:w-[360px] h-[91.8%]  bg-white shadow-sm border border-[#c1c1c1] duration-200 rounded-md">
                 <div className="flex justify-between items-center px-4 w-full h-[48px] border-b border-b-[#c1c1c1] bg-gray-100">
                   <div className="">
                     <IoIosNotificationsOutline className="text-xl text-[#627282]" />
@@ -172,12 +171,12 @@ function Navbar() {
                   handleOpen();
                 }
               }}
-              className="flex justify-center items-center cursor h-[32px] w-[32px] bg-gray-400 hover:bg-gray-300 rounded-[20px] overflow-hidden transition duration-150 ease-in-out"
+              className="flex justify-center items-center cursor h-[32px] w-[32px] bg-gray-400 hover:bg-gray-600 rounded-[20px] overflow-hidden transition duration-150 ease-in-out"
             >
               {user.photoURL ? (
                 <img src={user.photoURL} />
               ) : (
-                <p className=" text-slate-300 font-semibold">US</p>
+                <a className=" text-slate-300 font-semibold">US</a>
               )}
             </button>
             {isOpen ? (

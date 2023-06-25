@@ -31,6 +31,7 @@ function Members() {
   const [members, setMembers] = useState([]);
 
   let data = useRead("members");
+
   useEffect(() => {
     if (data) {
       setMembers(data);
@@ -43,9 +44,6 @@ function Members() {
     onClose();
   };
 
-  if (members.length === 0 && !data[0]) {
-    return <Loading />;
-  }
   return (
     <div>
       <div className={style.titlebar.container}>
@@ -76,8 +74,6 @@ function Members() {
                 }}
                 className={style.table.member}
                 key={index}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={() => handleMouseLeave(index)}
               >
                 {member.name.toUpperCase()[0]}
               </div>

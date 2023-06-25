@@ -64,7 +64,7 @@ function SidebarMenu() {
           </Link>
         ))}
       </ul>
-      <div className="text-center text-sm text-gray-400 w-[200px]">
+      <div className="hidden md:flex md:text-center text-sm text-gray-400 w-[200px]">
         Estás en un proyecto gestionado por el equipo
       </div>
     </div>

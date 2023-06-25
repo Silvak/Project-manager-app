@@ -59,7 +59,7 @@ const CustomForm = ({ onClose, data, members }) => {
       inputStart.value === "" ||
       inputEnd.value === ""
     ) {
-      alert("No puedes crear un epic vacio");
+      alert("Hay campos vacios!");
       return;
     } else {
       let dateByZone = currentTimeZone(inputStart.value, inputEnd.value);
@@ -99,7 +99,7 @@ const CustomForm = ({ onClose, data, members }) => {
         </div>
 
         <div className="flex flex-col overflow-x-hidden px-6 pt-4">
-          <div className="flex justify-start items-center  gap-3 mt-2 mb-6">
+          <div className=" flex justify-start items-center  gap-3 mt-2 mb-6">
             <InputColor
               initialValue={data.styles.progressColor}
               onChange={setColor}
@@ -169,7 +169,7 @@ const CustomForm = ({ onClose, data, members }) => {
               <option>Selecciona un miembro</option>
               {members.map((member) => (
                 <option key={member.id}>
-                  {member.name} - <span>{member.rol}</span>
+                  {member.name} - {member.rol}
                 </option>
               ))}
             </select>
@@ -195,12 +195,11 @@ const CustomForm = ({ onClose, data, members }) => {
               <option>Testing</option>
               <option>Documentación</option>
               <option>Seguridad</option>
-
               <option>Diseño</option>
             </select>
           </div>
 
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-3">
             <div>
               <label htmlFor="dateStart" className={styleModal.form.label}>
                 Inicio

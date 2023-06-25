@@ -113,7 +113,7 @@ function Login() {
 
           <div className="flex flex-col items-center mt-8 sm:hidden">
             <p className="fixed bottom-5 w-[90%] text-[14px] sm:text-sm text-center text-gray-500 mt-4">
-              Zafir Corporation, © 2022. Todos los derechos reservados.
+              Zafir Projects, © 2023. Todos los derechos reservados.
             </p>
           </div>
         </form>
@@ -121,7 +121,7 @@ function Login() {
 
       <div className="hidden flex-col items-center mt-8 sm:flex">
         <p className="text-[14px] sm:text-sm text-center text-gray-500 mt-1">
-          Zafir Corporation, © 2022. Todos los derechos reservados.
+          Zafir Projects, © 2023. Todos los derechos reservados.
         </p>
       </div>
     </div>

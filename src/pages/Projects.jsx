@@ -23,6 +23,10 @@ function Projects() {
     setProjects(data);
   }, [data.length, data]);
 
+  //loading
+  if (data === undefined) {
+    return <Loading />;
+  }
   return (
     <div>
       <div className={style.titlebar.container}>
@@ -37,7 +41,15 @@ function Projects() {
 
       {/* List of Epics */}
       <div className={style.gantt}>
-        {projects.length > 0 ? <GanttChart /> : <div>No hay tareas</div>}
+        {projects.length > 0 ? (
+          <GanttChart />
+        ) : (
+          <div className="border border-[#E4E7EB] rounded-md overflow-hidden mt-8">
+            <div className="h-[48px] px-4 flex justify-center items-center text-sm text-gray-400">
+              No hay proyectos
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
