@@ -108,7 +108,7 @@ const CustomForm = ({ onClose, members }) => {
         />
 
         <label htmlFor="email" className={styleModal.form.label}>
-          Memo
+          Descripción
         </label>
         <input
           id="text"
@@ -265,7 +265,7 @@ const Memo = () => {
     <div>
       <div className={style.titlebar.container}>
         <a href={style.titlebar.links}>Proyectos</a>
-        <h2 className={style.titlebar.title}>Memo</h2>
+        <h2 className={style.titlebar.title}>Memorándum</h2>
       </div>
 
       <div className="my-8">

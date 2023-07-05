@@ -29,7 +29,7 @@ const style = {
 
 function Members() {
   const [members, setMembers] = useState([]);
-
+  let uid = localStorage.getItem("uid");
   let data = useRead("members");
 
   useEffect(() => {
@@ -40,8 +40,7 @@ function Members() {
 
   const deleteProject = async (id, member) => {
     useDelete("members", id);
-    useCreate("history", memoModel(`${member}`, "Delete Member"));
-    onClose();
+    useCreate("history", memoModel(uid, `${member}`, "Delete Member"));
   };
 
   return (

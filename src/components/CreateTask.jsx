@@ -26,6 +26,7 @@ function CreateTask() {
   const [projects, setProjects] = useState([]);
   const [showInput, setShowInput] = useState(false);
   const inputProps = useInput("", "text");
+  const uid = localStorage.getItem("uid");
 
   //CREATE PROJECTS
   const createProject = async (e) => {
@@ -34,8 +35,11 @@ function CreateTask() {
       alert("No puedes crear un epic vacio");
       return;
     } else {
-      useCreate("projects", projectModel(inputProps.value));
-      useCreate("history", memoModel(`${inputProps.value}`, "Add Project"));
+      useCreate("projects", projectModel(uid, inputProps.value));
+      useCreate(
+        "history",
+        memoModel(uid, `${inputProps.value}`, "Add Project")
+      );
 
       inputProps.reset();
       setShowInput(false);

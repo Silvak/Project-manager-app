@@ -5,6 +5,10 @@ import Loading from "./Loading";
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
 
+  if (!loading && user != null) {
+    localStorage.setItem("uid", user.uid);
+  }
+
   if (loading) return <Loading />;
 
   if (!user) return <Navigate to="/login" />;

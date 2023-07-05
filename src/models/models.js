@@ -22,8 +22,9 @@ function capitalize(string) {
  * It returns the payload structure for the project model
  * @param {string} input  - name of the project
  **/
-export const projectModel = (input) => {
+export const projectModel = (userid, input) => {
   const payload = {
+    uid: userid,
     start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
     end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
     name: capitalize(input),
@@ -64,8 +65,9 @@ export const taskModel = (input) => {
   return payload;
 };
 
-export const membersModel = (name, email, rol) => {
+export const membersModel = (userId, name, email, rol) => {
   const payload = {
+    uid: userId,
     name: name,
     email: email,
     rol: rol,
@@ -75,11 +77,12 @@ export const membersModel = (name, email, rol) => {
   return payload;
 };
 
-export const memoModel = (desc, action) => {
+export const memoModel = (userId, desc, action, date) => {
   const payload = {
+    uid: userId,
     desc: desc,
     action: action,
-    date: new Date(Date.now()),
+    date: date || new Date(Date.now()),
   };
   return payload;
 };

@@ -42,6 +42,7 @@ const CustomForm = ({ onClose }) => {
   const inputName = useInput("", "text");
   const inputRol = useInput("", "text");
   const inputEmail = useInput("", "text");
+  const uid = localStorage.getItem("uid");
 
   //CREATE PROJECTS
   const createProject = async (e) => {
@@ -57,10 +58,10 @@ const CustomForm = ({ onClose }) => {
       //create
       useCreate(
         "members",
-        membersModel(inputName.value, inputEmail.value, inputRol.value)
+        membersModel(uid, inputName.value, inputEmail.value, inputRol.value)
       );
       //memo
-      useCreate("history", memoModel(`${inputName.value}`, "Add member"));
+      useCreate("history", memoModel(uid, `${inputName.value}`, "Add member"));
 
       inputName.reset();
       inputRol.reset();
@@ -155,9 +156,10 @@ const style = {
 //MAIN COMPONENT
 function CreateRol() {
   const [membersList, setMembersList] = useState([]);
+  const uid = localStorage.getItem("uid");
 
   // Leer los datos de los miembros
-  const data = useRead("members");
+  const data = useRead("members", uid);
 
   useEffect(() => {
     if (data) {

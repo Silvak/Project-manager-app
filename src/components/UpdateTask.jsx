@@ -47,6 +47,8 @@ const CustomForm = ({ onClose, data, members }) => {
   const inputStart = useInput(dateFormater(data.start.seconds), "date");
   const inputEnd = useInput(dateFormater(data.end.seconds), "date");
 
+  const uid = localStorage.getItem("uid");
+
   const updateProject = (e) => {
     e.preventDefault(e);
 
@@ -83,7 +85,7 @@ const CustomForm = ({ onClose, data, members }) => {
 
   const deleteProject = async (id) => {
     useDelete("projects", id);
-    useCreate("history", memoModel(`${data.name}`, "Delete Project"));
+    useCreate("history", memoModel(uid, `${data.name}`, "Delete Project"));
     onClose();
   };
 

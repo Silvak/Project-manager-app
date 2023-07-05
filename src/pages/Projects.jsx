@@ -4,6 +4,7 @@ import useRead from "../hooks/useRead";
 import CreateTask from "../components/CreateTask";
 import CreateRol from "../components/CreateRol";
 import Loading from "../components/Loading";
+import { auth } from "../firebase";
 
 const style = {
   gantt: ``,
@@ -16,15 +17,16 @@ const style = {
 
 function Projects() {
   const [projects, setProjects] = useState([]);
+  const user = auth.currentUser;
 
   //
-  const data = useRead("projects");
+  const data = useRead("projects", user.uid);
   useEffect(() => {
     setProjects(data);
   }, [data.length, data]);
 
   //loading
-  if (data === undefined) {
+  if (data === undefined || user === null || user.uid === undefined) {
     return <Loading />;
   }
   return (
@@ -35,7 +37,7 @@ function Projects() {
       </div>
 
       <div className="flex justify-start flex-col-reverse md:flex-row gap-4 mb-4">
-        <CreateTask />
+        <CreateTask userid={user.uid} />
         <CreateRol />
       </div>
 
