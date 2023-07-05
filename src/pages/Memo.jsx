@@ -10,6 +10,7 @@ import { BiMessageSquareAdd } from "react-icons/bi";
 import { AiTwotoneStar } from "react-icons/ai";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { RiEyeLine } from "react-icons/ri";
+import { TiDeleteOutline } from "react-icons/ti";
 import { v4 as uuid } from "uuid";
 
 const style = {
@@ -61,26 +62,49 @@ const CustomForm = ({ onClose, members }) => {
   const [projects, setProjects] = useState([]);
   const inputTitle = useInput("", "text");
   const inputMemo = useInput("", "text");
+  const inputStart = useInput("", "date");
+  const inputEnd = useInput("", "date");
+
+  //members
+  const inputMembers = useInput("", "text");
+  const [membersProject, setMembersProject] = useState([]);
+  const [membersList, setMembersList] = useState([]);
+
+  const handleAddMember = (member) => {
+    //comprobar si el nombre no esta en el array
+    let findMember = membersProject.find((item) => item === member);
+    if (findMember == undefined && member !== "") {
+      setMembersProject([...membersProject, member]);
+    }
+  };
+
+  const handleRemoveMember = (member, index) => {
+    setMembersProject(membersProject.filter((item) => item !== member));
+  };
 
   const data = useRead("projects");
+  const dataMembers = useRead("members");
+
   useEffect(() => {
     setProjects(data);
-  }, [data]);
+    setMembersList(dataMembers);
+  }, [data, dataMembers]);
 
   //CREATE PROJECTS
   const createMemo = (e, id) => {
     e.preventDefault();
     const memosList = projects.find((element) => element.id === id).memos;
     const payload = {
+      id: uuid(),
       name: inputTitle.value,
       data: inputMemo.value,
+      members: membersProject || [],
+      start: inputStart.value,
+      end: inputEnd.value,
     };
     useUpdate("projects", id, {
       memos: {
-        list: [
-          ...memosList.list,
-          { name: payload.name, data: payload.data, id: uuid() },
-        ],
+        list: [...memosList.list, payload],
       },
     });
     onClose();
@@ -120,6 +144,97 @@ const CustomForm = ({ onClose, members }) => {
           placeholder="p. ej.: Discusión de la reunión"
         />
 
+        {/* members <<<<<<<<<<<<< */}
+        <div className="w-full ">
+          <label htmlFor="members" className={styleModal.form.label}>
+            Agregar Miembros
+          </label>
+
+          <div className="flex justify-between gap-1  w-ful">
+            <select
+              id="members"
+              value={inputMembers.value}
+              onChange={inputMembers.onChange}
+              className={styleModal.form.select}
+            >
+              <option id="members" key={"default"}>
+                Seleciona a un miembro
+              </option>
+              {membersList.map((member, index) => (
+                <option id="members" key={index} value={member.name}>
+                  {member.name}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              onClick={() => handleAddMember(inputMembers.value)}
+              className="text-white bg-blue-700 hover:bg-blue-600 h-[40px] w-[40px] rounded-sm"
+            >
+              +
+            </button>
+          </div>
+
+          <div className="flex h-[60px] gap-2 w-full bg-gray-100 rounded-sm  p-2 overflow-x-scroll">
+            {membersProject.length > 0 ? (
+              <>
+                {membersProject.map((member, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between gap-2 bg-white px-2 py-1"
+                  >
+                    <p>{member}</p>
+                    <button
+                      type="button"
+                      className=" text-white bg-red-700 hover:bg-red-600  rounded-full"
+                      onClick={() => handleRemoveMember(member, index)}
+                    >
+                      <TiDeleteOutline />
+                    </button>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className="flex items-center justify-center h-full w-full">
+                <p className="text-sm text-gray-500">
+                  No hay miembros asignados
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex justify-between gap-3">
+          <div>
+            <label htmlFor="dateStart" className={styleModal.form.label}>
+              Inicio
+            </label>
+            <input
+              id="dateStart"
+              required
+              className={styleModal.form.input}
+              type="date"
+              value={inputStart.value}
+              onChange={inputStart.onChange}
+              max={inputEnd.value}
+            />
+          </div>
+          <div>
+            <label htmlFor="dateEnd" className={styleModal.form.label}>
+              Fin
+            </label>
+            <input
+              id="dateEnd"
+              required
+              className={styleModal.form.input}
+              type="date"
+              value={inputEnd.value}
+              onChange={inputEnd.onChange}
+              min={inputStart.value}
+            />
+          </div>
+        </div>
+
         <div className={styleModal.form.buttonbox}>
           <button onClick={onClose} className={styleModal.form.buttonclose}>
             Cerrar
@@ -158,7 +273,48 @@ const ShowMemoDetail = ({ onClose, members }) => {
             {members.name}
           </h3>
         </div>
-        <p className={`mb-8`}>{members.data}</p>
+
+        <div>
+          <label htmlFor="desc" className={styleModal.form.label}>
+            {" "}
+            Descripción:
+          </label>
+          <p id="desc" className={`mt-1 mb-4`}>
+            {members.data}
+          </p>
+        </div>
+
+        {/* members */}
+        <div className="flex h-[60px] gap-2 w-full bg-gray-100 rounded-sm  p-2 overflow-x-scroll mb-2">
+          {members.members != undefined > 0 ? (
+            <>
+              {members.members.map((member, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between gap-2 bg-white px-2 py-1"
+                >
+                  <p>{member}</p>
+                </div>
+              ))}
+            </>
+          ) : (
+            <div className="flex items-center justify-center h-full w-full">
+              <p className="text-sm text-gray-500">No hay miembros asignados</p>
+            </div>
+          )}
+        </div>
+
+        <div className="flex justify-between my-4">
+          <div className="flex items-center gap-3 ">
+            <p>Inicio: </p>
+            <p className={`px-2 py-1 bg-gray-100`}> {members.start}</p>
+          </div>
+
+          <div className="flex items-center gap-3 ">
+            <p>Fin: </p>
+            <p className={`px-2 py-1 bg-gray-100`}> {members.end}</p>
+          </div>
+        </div>
 
         <div className={styleModal.form.buttonbox}>
           <button t onClick={onClose} className={styleModal.form.buttonclose}>
@@ -174,6 +330,9 @@ const ShowMemoItem = ({ element, index, projecId, deleteMemo }) => {
   let data = {
     name: element.name,
     data: element.data,
+    members: element.members,
+    start: element.start,
+    end: element.end,
   };
   return (
     <div

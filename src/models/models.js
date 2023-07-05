@@ -30,6 +30,7 @@ export const projectModel = (userid, input) => {
     name: capitalize(input),
     description: "...",
     responsible: "",
+    members: [],
     tags: "",
     id: "",
     state: "Por hacer",
@@ -77,12 +78,13 @@ export const membersModel = (userId, name, email, rol) => {
   return payload;
 };
 
-export const memoModel = (userId, desc, action, date) => {
+export const memoModel = (userId, desc, action, start, end) => {
   const payload = {
-    uid: userId,
     desc: desc,
     action: action,
-    date: date || new Date(Date.now()),
+    members: [""],
+    start: start || new Date(Date.now()),
+    end: end || new Date(Date.now()),
   };
   return payload;
 };

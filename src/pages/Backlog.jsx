@@ -53,7 +53,7 @@ function Backlog() {
       <div className={style.table.head}>
         <p className="w-1/4">Descripción</p>
         <p className={style.table.p2}>Acción</p>
-        <p className={style.table.p3}>Fecha</p>
+        {/* <p className={style.table.p3}>Fecha</p> */}
         <p className=""></p>
       </div>
 
@@ -78,9 +78,11 @@ function Backlog() {
                     {item.action}
                   </span>{" "}
                 </p>
+                {/* 
                 <p className={style.table.p3}>
                   {new Date(item.date.seconds * 1000).toDateString()}
-                </p>
+                </p> 
+                */}
                 <button
                   onClick={() => deleteProject(item.id)}
                   className={style.table.button}

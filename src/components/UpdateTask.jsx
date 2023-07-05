@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { GrClose } from "react-icons/gr";
+import { TiDeleteOutline } from "react-icons/ti";
 import useInput from "../hooks/useInput";
 import useUpdate from "../hooks/useUpdate";
 import useDelete from "../hooks/useDelete";
@@ -17,7 +18,7 @@ const styleModal = {
   icon: "flex justify-center items-center text-gray-500 text-xl",
   form: {
     container:
-      "flex flex-col gap-2 bg-white w-full md:w-[480px] h-full shadow-lg border border-gray-40 relative",
+      "flex flex-col gap-2 bg-white w-full md:w-[480px] h-full shadow-lg border border-gray-40 relative  pb-[66px]",
     head: "flex justify-between w-full pl-6 pr-3 py-2 flex-wrap items-center justify-between border-b border-gray-200",
     title: "text-xl font-bold text-[#172B4D]",
     buttonclose:
@@ -49,6 +50,34 @@ const CustomForm = ({ onClose, data, members }) => {
 
   const uid = localStorage.getItem("uid");
 
+  //members
+  const inputMembers = useInput("", "text");
+  const [membersProject, setMembersProject] = useState([]);
+  const [membersList, setMembersList] = useState([]);
+
+  const handleAddMember = (member) => {
+    //comprobar si el nombre no esta en el array
+    let findMember = membersProject.find((item) => item === member);
+    if (findMember == undefined && member !== "") {
+      setMembersProject([...membersProject, member]);
+    }
+  };
+
+  const handleRemoveMember = (member, index) => {
+    setMembersProject(membersProject.filter((item) => item !== member));
+  };
+
+  const dataMembers = useRead("members");
+  useEffect(() => {
+    setMembersList(dataMembers);
+
+    if (data.members) {
+      setMembersProject(data.members);
+    }
+  }, [dataMembers]);
+
+  //console.log(members);
+
   const updateProject = (e) => {
     e.preventDefault(e);
 
@@ -65,7 +94,7 @@ const CustomForm = ({ onClose, data, members }) => {
       return;
     } else {
       let dateByZone = currentTimeZone(inputStart.value, inputEnd.value);
-
+      console.log(membersProject);
       useUpdate("projects", data.id, {
         name: inputTitle.value,
         description: inputDesc.value,
@@ -74,6 +103,7 @@ const CustomForm = ({ onClose, data, members }) => {
         tags: inputTags.value,
         start: dateByZone.start,
         end: dateByZone.end,
+        members: membersProject,
         progress: inputState.value === "Por hacer" ? 0 : 100,
         styles: {
           progressColor: color.hex,
@@ -177,6 +207,66 @@ const CustomForm = ({ onClose, data, members }) => {
             </select>
           </div>
 
+          {/* members <<<<<<<<<<<<< */}
+          <div className="w-full mb-4">
+            <label htmlFor="members" className={styleModal.form.label}>
+              Agregar Miembros
+            </label>
+
+            <div className="flex justify-between gap-1  w-ful">
+              <select
+                id="members"
+                value={inputMembers.value}
+                onChange={inputMembers.onChange}
+                className={styleModal.form.select}
+              >
+                <option id="members" key={"default"}>
+                  Seleciona a un miembro
+                </option>
+                {membersList.map((member, index) => (
+                  <option id="members" key={index} value={member.name}>
+                    {member.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => handleAddMember(inputMembers.value)}
+                className="text-white bg-blue-700 hover:bg-blue-600 h-[40px] w-[40px] rounded-sm"
+              >
+                +
+              </button>
+            </div>
+
+            <div className="flex h-[60px] gap-2 w-full bg-gray-100 rounded-sm  p-2 overflow-x-scroll">
+              {membersProject.length > 0 ? (
+                <>
+                  {membersProject.map((member, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between gap-2 bg-white px-2 py-1"
+                    >
+                      <p>{member}</p>
+                      <button
+                        type="button"
+                        className=" text-white bg-red-700 hover:bg-red-600  rounded-full"
+                        onClick={() => handleRemoveMember(member, index)}
+                      >
+                        <TiDeleteOutline />
+                      </button>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <div className="flex items-center justify-center h-full w-full">
+                  <p className="text-sm text-gray-500">
+                    No hay miembros asignados
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div>
             <label htmlFor="tags" className={styleModal.form.label}>
               Etiquetas
@@ -201,7 +291,7 @@ const CustomForm = ({ onClose, data, members }) => {
             </select>
           </div>
 
-          <div className="flex justify-between gap-3">
+          <div className="flex justify-between gap-3 bg-white">
             <div>
               <label htmlFor="dateStart" className={styleModal.form.label}>
                 Inicio
@@ -231,6 +321,7 @@ const CustomForm = ({ onClose, data, members }) => {
               />
             </div>
           </div>
+          <div className="pb-8"> </div>
         </div>
 
         <div className={styleModal.form.foot}>
