@@ -74,7 +74,7 @@ function Backlog() {
                 </p>
                 <p className={style.table.p2}>
                   {" "}
-                  <span className="bg-gray-100 px-3 py-1 rounded-full">
+                  <span className="bg-gray-100 px-3 py-1 rounded-sm">
                     {item.action}
                   </span>{" "}
                 </p>

@@ -80,6 +80,7 @@ export const membersModel = (userId, name, email, rol) => {
 
 export const memoModel = (userId, desc, action, start, end) => {
   const payload = {
+    uid: userId,
     desc: desc,
     action: action,
     members: [""],
