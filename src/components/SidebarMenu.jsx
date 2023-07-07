@@ -12,6 +12,7 @@ import useInput from "../hooks/useInput";
 import useRead from "../hooks/useRead";
 import useUpdate from "../hooks/useUpdate";
 import useCreate from "../hooks/useCreate";
+import Loading from "./Loading";
 
 const style = {
   container: `flex flex-col justify-between h-full  overflow-hidden`, // CHANGED << "w-screen" cause a problem in the general width of the application
@@ -28,6 +29,23 @@ const style = {
   },
 };
 
+const styleModal = {
+  container: `fixed grid place-content-center top-0 left-0 w-full h-full bg-[#6A89C3]/40 z-[100]`,
+  button: `w-[36px] h-[36px] rounded-full bg-gray-200`,
+  icon: `flex justify-center items-center text-gray-500 text-xl`,
+  form: {
+    container: `flex flex-col gap-2 bg-white rounded-md p-5 w-[340px] md:w-[480px] md:p-8 h-min shadow-lg border border-gray-40`,
+    input:
+      "w-full bg-gray-100 h-[40px] rounded-sm px-2 py-1  focus:outline-none focus:ring-1 focus:ring-blue-400 mb-2",
+    select: `bg-gray-100 h-[40px] w-full rounded-sm px-2 py-1  focus:outline-none focus:ring-1 focus:ring-blue-400 mb-4`,
+    title: `text-xl font-bold text-[#172B4D] mb-6`,
+    label: `text-[#172B4D] hover:text-[#172B4D] text-sm m-0`,
+    buttonbox: `flex items-center justify-end gap-2 mt-8`,
+    button: `bg-blue-700 hover:bg-blue-600 text-white h-[40px] px-3 py-1 rounded-sm  flex items-center gap-1`,
+    buttonclose: `hover:bg-gray-200 h-[40px] px-3 py-1 rounded-sm  flex items-center gap-1`,
+  },
+};
+
 const path = [
   { name: "Hoja de ruta", path: "/", icon: <RiBarChartHorizontalFill /> },
   { name: "Miembros", path: "/members", icon: <HiUsers /> },
@@ -36,35 +54,7 @@ const path = [
   { name: "Historial", path: "/history", icon: <MdAutoAwesomeMotion /> },
 ];
 
-/*
-<button onClick={handleOpen}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-400 hover:text-gray-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            {open ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            )}
-          </svg>
-        </button>
-
-*/
-
+// MODAL
 const TitleModal = ({ open, handleOpen, data }) => {
   const [title, setTitle] = useState("Title");
   let inputName = useInput("", "text");
@@ -80,7 +70,7 @@ const TitleModal = ({ open, handleOpen, data }) => {
 
   return (
     <>
-      <div onClick={handleOpen}>
+      <div onClick={handleOpen} className="cursor-pointer">
         <img
           className={style.projectDesc.img}
           src="https://avatars.githubusercontent.com/u/77449523?s=200&v=4"
@@ -88,39 +78,39 @@ const TitleModal = ({ open, handleOpen, data }) => {
       </div>
       <div className="flex justify-between items-center">
         {open ? (
-          <div className="fixed top-0 left-0 grid place-content-center w-full h-full bg-blue-200/60 z-[1010]">
-            <div className="flex flex-col gap-4 bg-white min-w-[280px] rounde-md drop-shadow-md p-5">
-              <h3>Actualizar Nombre</h3>
+          <div className={styleModal.container}>
+            <div className={styleModal.form.container}>
+              <h3 className={styleModal.form.title}>Actualizar Nombre</h3>
               <div>
-                <label className="text-sm font-semibold">
+                <label className={styleModal.form.label}>
                   Nombre del proyecto
                 </label>
                 <input
-                  className="w-full border border-gray-300 rounded-sm px-2 py-1"
+                  className={styleModal.form.input}
                   type="text"
                   value={inputName.value}
                   onChange={inputName.onChange}
                 />
               </div>
               <div>
-                <label className="text-sm font-semibold">Descripción</label>
+                <label className={styleModal.form.label}>Descripción</label>
                 <input
-                  className="w-full border border-gray-300 rounded-sm px-2 py-1"
+                  className={styleModal.form.input}
                   type="text"
                   value={inputDescription.value}
                   onChange={inputDescription.onChange}
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-4 w-full h-[46px]">
+              <div className={styleModal.form.buttonbox}>
                 <button
-                  className=" hover:bg-gray-100 px-2 py-1 rounded-sm"
+                  className={styleModal.form.buttonclose}
                   onClick={handleOpen}
                 >
                   Cerrar
                 </button>
                 <button
-                  className="bg-blue-700 hover:bg-blue-600 px-2 py-1 rounded-sm text-white"
+                  className={styleModal.form.button}
                   onClick={handleUpdate}
                 >
                   Guardar
@@ -157,11 +147,19 @@ function SidebarMenu() {
       <ul>
         <div className={style.projectDesc.container}>
           {/* Button modal */}
-          <TitleModal open={open} handleOpen={handleOpen} data={projectName} />
-          <div>
-            <h3 className={style.projectDesc.title}>{projectName.title}</h3>
-            <p className={style.projectDesc.subtitle}>{projectName.desc}</p>
-          </div>
+          {projectName && (
+            <>
+              <TitleModal
+                open={open}
+                handleOpen={handleOpen}
+                data={projectName}
+              />
+              <div>
+                <h3 className={style.projectDesc.title}>{projectName.title}</h3>
+                <p className={style.projectDesc.subtitle}>{projectName.desc}</p>
+              </div>{" "}
+            </>
+          )}
         </div>
 
         <h4 className="text-sm font-semibold ml-2 mb-2">PLANIFICAIÓN</h4>
