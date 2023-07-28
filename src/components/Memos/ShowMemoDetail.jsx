@@ -76,7 +76,7 @@ const ShowMemoDetail = ({ onClose, members }) => {
                       : "bg-orange-200"
                   }  px-3 py-1 rounded-sm`}
                 >
-                  {members.state}
+                  {members.state != "Seleccionar" ? members.state : "Por hacer"}
                 </span>
               </p>
             </div>
@@ -100,6 +100,7 @@ const ShowMemoDetail = ({ onClose, members }) => {
                 value={inputState.value}
                 onChange={inputState.onChange}
               >
+                <option>Seleccionar</option>
                 <option>Por hacer</option>
                 <option>Finalizado</option>
               </select>

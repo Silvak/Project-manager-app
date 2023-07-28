@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { db, auth } from "../firebase";
-import { collection, onSnapshot, query, getDocs } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 /**
  * read data from a collection
@@ -15,21 +21,18 @@ const useRead = (docName) => {
   const getData = (docNameQuery) => {};
 
   useEffect(() => {
-    const q = query(collection(db, docName));
+    const q = query(collection(db, docName), where("uid", "==", userId));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let projectsArr = [];
       querySnapshot.forEach((doc) => {
         projectsArr.push({ ...doc.data(), id: doc.id });
       });
-      let filtered = projectsArr.filter((item) => item.uid === userId);
-      setData(filtered);
+      setData(projectsArr);
     });
 
     return () => unsubscribe();
   }, []);
-
-  //let dataFiltered = data.filter((item) => item.uid === userId);
 
   return data;
 };

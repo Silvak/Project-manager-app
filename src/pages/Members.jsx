@@ -1,11 +1,14 @@
+// Members.js
 import { useEffect, useState } from "react";
 import useRead from "../hooks/useRead";
-import Loading from "../components/Loading";
+import useDelete from "../hooks/useDelete";
+import useCreate from "../hooks/useCreate";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import CreateRol from "../components/CreateRol";
-import useDelete from "../hooks/useDelete";
 import { memoModel } from "../models/models";
-import useCreate from "../hooks/useCreate";
+import useLocalStorage from "../hooks/useLocalStorage";
+import ReactPaginate from "react-paginate";
+import "../index.css";
 
 const style = {
   gantt: ``,
@@ -29,8 +32,13 @@ const style = {
 
 function Members() {
   const [members, setMembers] = useState([]);
-  let uid = localStorage.getItem("uid");
-  let data = useRead("members");
+  const [pageNumber, setPageNumber] = useState(0);
+  const [uid, setUid] = useLocalStorage("uid", "");
+
+  const data = useRead("members");
+
+  const membersPerPage = 8;
+  const pagesVisited = pageNumber * membersPerPage;
 
   useEffect(() => {
     if (data) {
@@ -41,6 +49,12 @@ function Members() {
   const deleteProject = async (id, member) => {
     useDelete("members", id);
     useCreate("history", memoModel(uid, `${member}`, "Delete Member"));
+  };
+
+  const pageCount = Math.ceil(members.length / membersPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
   };
 
   return (
@@ -62,36 +76,61 @@ function Members() {
       </div>
 
       <div className={style.table.body}>
-        {members.map((member, index) => (
-          <div className={style.table.item} key={index}>
-            <div className={style.table.memberImg}>
-              <div
-                style={{
-                  background: member.colorbg,
-                  color: member.colorText,
-                  zIndex: member.selected ? 30 : 7 - index,
-                }}
-                className={style.table.member}
-                key={index}
-              >
-                {member.name.toUpperCase()[0]}
+        {members
+          .slice(pagesVisited, pagesVisited + membersPerPage)
+          .map((member, index) => (
+            <div className={style.table.item} key={index}>
+              <div className={style.table.memberImg}>
+                <div
+                  style={{
+                    background: member.colorbg,
+                    color: member.colorText,
+                    zIndex: member.selected ? 30 : 7 - index,
+                  }}
+                  className={style.table.member}
+                  key={index}
+                >
+                  {member.name.toUpperCase()[0]}
+                </div>
+                <p className={style.table.p}>{member.name}</p>
               </div>
-              <p className={style.table.p}>{member.name}</p>
-            </div>
 
-            <p className={style.table.p2}>{member.email}</p>
-            <p className={style.table.p3}>{member.rol}</p>
-            <button
-              onClick={() => deleteProject(member.id, member.name)}
-              className={style.table.button}
-            >
-              <span>
-                <RiDeleteBin7Line />
-              </span>
-            </button>
-          </div>
-        ))}
+              <p className={style.table.p2}>{member.email}</p>
+              <p className={style.table.p3}>{member.rol}</p>
+              <button
+                onClick={() => deleteProject(member.id, member.name)}
+                className={style.table.button}
+              >
+                <span>
+                  <RiDeleteBin7Line />
+                </span>
+              </button>
+            </div>
+          ))}
+        {new Array(
+          membersPerPage -
+            members.slice(pagesVisited, pagesVisited + membersPerPage).length
+        )
+          .fill("")
+          .map((_, index) => (
+            <div className={style.table.item} key={index + members.length}>
+              {/* Render empty slots */}
+            </div>
+          ))}
       </div>
+      {pageCount > 1 && (
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          containerClassName={"paginationButtons"}
+          previousLinkClassName={"previousButton"}
+          nextLinkClassName={"nextButton"}
+          disabledClassName={"paginationDisabled"}
+          activeClassName={"paginationActive"}
+        />
+      )}
     </div>
   );
 }

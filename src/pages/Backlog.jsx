@@ -1,8 +1,10 @@
+// Backlog.js
 import { useEffect, useState } from "react";
 import useRead from "../hooks/useRead";
-import Loading from "../components/Loading";
 import useDelete from "../hooks/useDelete";
 import { RiDeleteBin7Line } from "react-icons/ri";
+import ReactPaginate from "react-paginate";
+import "../index.css"; // Asegúrate de que este sea el camino correcto a tu archivo de estilos
 
 const style = {
   gantt: ``,
@@ -26,8 +28,12 @@ const style = {
 
 function Backlog() {
   const [history, setHistory] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
 
-  let data = useRead("history");
+  const data = useRead("history");
+
+  const itemsPerPage = 6;
+  const pagesVisited = pageNumber * itemsPerPage;
 
   useEffect(() => {
     if (data) {
@@ -39,10 +45,12 @@ function Backlog() {
     useDelete("history", id);
   };
 
-  /*
-  if (history.length === 0 && !data[0]) {
-    return <Loading />;
-  }*/
+  const pageCount = Math.ceil(history.length / itemsPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
   return (
     <div>
       <div className={style.titlebar.container}>
@@ -65,37 +73,63 @@ function Backlog() {
           </div>
         ) : (
           <>
-            {history.map((item, index) => (
-              <div className={style.table.item} key={index}>
-                <p className="w-1/4 whitespace-nowrap">
-                  {item.desc.length > 20
-                    ? `${item.desc.slice(0, 20)}...`
-                    : item.desc}
-                </p>
-                <p className={style.table.p2}>
-                  {" "}
-                  <span className="bg-gray-100 px-3 py-1 rounded-sm">
-                    {item.action}
-                  </span>{" "}
-                </p>
-                {/* 
-                <p className={style.table.p3}>
-                  {new Date(item.date.seconds * 1000).toDateString()}
-                </p> 
-                */}
-                <button
-                  onClick={() => deleteProject(item.id)}
-                  className={style.table.button}
-                >
-                  <span>
-                    <RiDeleteBin7Line />
-                  </span>
-                </button>
-              </div>
-            ))}
+            {history
+              .slice(pagesVisited, pagesVisited + itemsPerPage)
+              .map((item, index) => (
+                <div className={style.table.item} key={index}>
+                  <p className="w-1/4 whitespace-nowrap">
+                    {item.desc.length > 20
+                      ? `${item.desc.slice(0, 20)}...`
+                      : item.desc}
+                  </p>
+                  <p className={style.table.p2}>
+                    {" "}
+                    <span className="bg-gray-100 px-3 py-1 rounded-sm">
+                      {item.action}
+                    </span>{" "}
+                  </p>
+                  {/* 
+            <p className={style.table.p3}>
+              {new Date(item.date.seconds * 1000).toDateString()}
+            </p> 
+            */}
+                  <button
+                    onClick={() => deleteProject(item.id)}
+                    className={style.table.button}
+                  >
+                    <span>
+                      <RiDeleteBin7Line />
+                    </span>
+                  </button>
+                </div>
+              ))}
+            {new Array(
+              itemsPerPage -
+                history.slice(pagesVisited, pagesVisited + itemsPerPage).length
+            )
+              .fill("")
+              .map((_, index) => (
+                <div className={style.table.item} key={index + history.length}>
+                  {/* Render empty slots */}
+                </div>
+              ))}
           </>
         )}
       </div>
+
+      {pageCount > 1 && (
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          containerClassName={"paginationButtons"}
+          previousLinkClassName={"previousButton"}
+          nextLinkClassName={"nextButton"}
+          disabledClassName={"paginationDisabled"}
+          activeClassName={"paginationActive"}
+        />
+      )}
     </div>
   );
 }
