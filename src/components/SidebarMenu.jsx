@@ -50,7 +50,7 @@ const path = [
   { name: "Hoja de ruta", path: "/", icon: <RiBarChartHorizontalFill /> },
   { name: "Miembros", path: "/members", icon: <HiUsers /> },
   //{ name: "Etiquetas", path: "/tags", icon: <AiFillTag /> },
-  { name: "Memo", path: "/memo", icon: <RiBookmarkFill /> },
+  { name: "Tareas", path: "/task", icon: <RiBookmarkFill /> },
   { name: "Historial", path: "/history", icon: <MdAutoAwesomeMotion /> },
 ];
 

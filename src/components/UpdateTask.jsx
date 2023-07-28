@@ -238,15 +238,15 @@ const CustomForm = ({ onClose, data, members }) => {
               </button>
             </div>
 
-            <div className="flex h-[60px] gap-2 w-full bg-gray-100 rounded-sm  p-2 overflow-x-scroll">
+            <div className="flex   gap-2 w-full bg-gray-100 rounded-sm  p-2 overflow-x-scroll">
               {membersProject.length > 0 ? (
                 <>
                   {membersProject.map((member, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between gap-2 bg-white px-2 py-1"
+                      className="flex items-center justify-between gap-2 bg-white px-2 py-1 h-[40px]"
                     >
-                      <p>{member}</p>
+                      <p className=" whitespace-nowrap">{member}</p>
                       <button
                         type="button"
                         className=" text-white bg-red-700 hover:bg-red-600  rounded-full"
