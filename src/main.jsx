@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/Login.jsx";
 import Memo from "./pages/Memo.jsx";
 import Tags from "./pages/Tags.jsx";
+import Subtask from "./pages/Subtask";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: "/history", element: <Backlog /> },
       { path: "/members", element: <Members /> },
       { path: "/task", element: <Memo /> },
+      { path: "/task/:id/:id", element: <Subtask /> },
       { path: "/tags", element: <Tags /> },
     ],
   },

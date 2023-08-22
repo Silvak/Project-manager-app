@@ -114,22 +114,3 @@ function CreateTask() {
 }
 
 export default CreateTask;
-
-/*
-
-<ul className={style.tasks}>
-          {projects.map((project, index) => (
-            <Epic
-              key={index}
-              project={project}
-              toggleComplete={toggleComplete}
-              deleteProject={deleteProject}
-            />
-          ))}
-        </ul>
-
-        {data.length > 0 && (
-          <p className={style.count}>You have {projects.length} todos</p>
-        )}
-
-*/
