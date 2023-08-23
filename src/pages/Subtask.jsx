@@ -12,7 +12,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { RiBookmarkFill } from "react-icons/ri";
 import { BiMessageSquareAdd } from "react-icons/bi";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-
+import { IoIosArrowBack } from "react-icons/io";
 //
 import Modal from "../components/Modal";
 import ShowMemo from "../components/Memos/ShowMemo";
@@ -53,9 +53,12 @@ function Subtask() {
       <div className={style.titlebar.container}>
         <button
           onClick={() => navigate(-1)}
-          className="hover:bg-gray-100 rounded-sm px-2 y-1"
+          className="hover:bg-gray-100 rounded-sm pr-2 y-1 flex items-center justify-start"
         >
-          Go back
+          <div className="text-[14px]">
+            <IoIosArrowBack />
+          </div>
+          <div className="text-[14px]">Go back</div>
         </button>
         <h2 className={style.titlebar.title}>Subtareas</h2>
       </div>

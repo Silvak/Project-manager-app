@@ -3,7 +3,11 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import AuthProvider from "./context/authContext";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 
 import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
@@ -27,7 +31,7 @@ const router = createBrowserRouter([
       { path: "/history", element: <Backlog /> },
       { path: "/members", element: <Members /> },
       { path: "/task", element: <Memo /> },
-      { path: "/task/:id", element: <Subtask /> },
+      { path: "/task/:id", element: <Subtask />, errorElement: <Memo /> },
       { path: "/tags", element: <Tags /> },
     ],
   },
