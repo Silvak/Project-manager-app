@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../Modal";
 import useUpdate from "../../hooks/useUpdate";
-import ShowMemoButton from "./ShowMemoButton";
-import ShowMemoDetail from "./ShowMemoDetail";
+import ShowMemoButton from "./ShowSubtaskButton";
+import ShowSubtaskDetail from "./ShowSubtaskDetail";
 import { useNavigate } from "react-router-dom";
+
+// hooks
+import useRead from "../../hooks/useRead";
+import useDelete from "../../hooks/useDelete";
 
 // Icons
 import { AiTwotoneStar } from "react-icons/ai";
@@ -14,7 +18,7 @@ const Title = ({ element }) => {
   const name =
     element.name.length > 26 ? `${element.name.slice(0, 26)}...` : element.name;
   return (
-    <div className="flex justify-start items-center gap-3 w-1/3 w-full col-span-3  sm:col-span-2">
+    <div className="flex justify-start items-center gap-3  w-full col-span-3  sm:col-span-2">
       <p className="flex bg-blue-400 text-white p-1 rounded-md">
         <AiTwotoneStar />
       </p>
@@ -80,19 +84,10 @@ const Buttons = ({ handleDelete, data }) => {
         <Modal
           btnActive={true}
           buttonComponent={ShowMemoButton}
-          contentComponent={ShowMemoDetail}
+          contentComponent={ShowSubtaskDetail}
           members={data}
         />
       </div>
-
-      <button
-        onClick={() => navigate(`/task/${data.projectId}.${data.index}`)}
-        className="p-2 hover:bg-gray-500 hover:text-white duration-200 ease-out rounded-md"
-      >
-        <span>
-          <GoTasklist />
-        </span>
-      </button>
 
       <button
         onClick={handleDelete}
@@ -106,10 +101,17 @@ const Buttons = ({ handleDelete, data }) => {
   );
 };
 
-const ShowMemoItem = ({ element, index, projectId, deleteMemo }) => {
+const ShowMemoItem = ({
+  element,
+  index,
+  projectId,
+  deleteSubtask,
+  taskIndex,
+}) => {
   let data = {
     projectId: projectId,
     index: index,
+    taskIndex: taskIndex,
     name: element.name,
     data: element.data,
     members: element.members,
@@ -119,8 +121,8 @@ const ShowMemoItem = ({ element, index, projectId, deleteMemo }) => {
   };
 
   const handleDelete = () => {
-    if (window.confirm("¿Estás seguro de que quieres borrar esta tarea?")) {
-      deleteMemo(projectId, index);
+    if (window.confirm("¿Estás seguro de que quieres borrar esta subtarea?")) {
+      deleteSubtask(index);
     }
   };
 
@@ -140,29 +142,55 @@ const ShowMemoItem = ({ element, index, projectId, deleteMemo }) => {
   );
 };
 
-const ShowMemo = ({ memos, projectId }) => {
-  const deleteMemo = (id, itemIndex) => {
-    const newList = memos.list.filter((element, index) => index !== itemIndex);
+const ShowSubTask = ({ memos, projectId, taskIndex }) => {
+  const [project, setProject] = useState(null);
+  const data = useRead("projects");
+
+  useEffect(() => {
+    if (data) {
+      const specificProject = data.find((p) => p.id === projectId);
+      setProject(specificProject);
+    }
+  }, [data, projectId]);
+
+  const deleteSubtask = (subTaskIndex) => {
+    // Accede al memo específico
+    const memo = project.memos.list[taskIndex];
+    if (!memo) return;
+
+    // Copia la lista de sub-tareas para evitar mutaciones directas
+    const updatedSubtasks = [...memo.subTasks];
+    // Elimina la sub-tarea específica
+    updatedSubtasks.splice(subTaskIndex, 1);
+    // Actualiza las sub-tareas del memo
+    memo.subTasks = updatedSubtasks;
+
+    // Actualiza el proyecto con el memo modificado
+    const updatedMemos = [...project.memos.list];
+    updatedMemos[taskIndex] = memo; // Aquí es donde estaba el error
+
     try {
-      useUpdate("projects", id, { memos: { list: newList } });
+      useUpdate("projects", projectId, { memos: { list: updatedMemos } });
     } catch (error) {
       console.log(error);
     }
   };
-  if (memos.list.length === 0) return null;
+
+  if (memos === undefined || !project) return null;
   return (
     <div className="bg-gray-100 w-full">
-      {memos.list.map((element, index) => (
+      {memos?.map((element, index) => (
         <ShowMemoItem
           element={element}
           index={index}
           key={index}
           projectId={projectId}
-          deleteMemo={deleteMemo}
+          taskIndex={taskIndex}
+          deleteSubtask={deleteSubtask}
         />
       ))}
     </div>
   );
 };
 
-export default ShowMemo;
+export default ShowSubTask;

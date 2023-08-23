@@ -12,16 +12,23 @@ import { styleModal } from "../../styles/MemoStyles";
 import { TiDeleteOutline } from "react-icons/ti";
 
 //
-const ShowMemoDetail = ({ onClose, members }) => {
+const ShowSubtaskDetail = ({ onClose, members }) => {
   const [project, setProject] = useState(null);
   const inputState = useInput("Por hacer", "state");
 
   const handleState = () => {
     // update state
     if (project) {
-      let data = project.memos.list;
-      data[members.index].state = inputState.value;
-      useUpdate("projects", project.id, { memos: { list: data } });
+      // Make a deep copy of data
+      const newData = JSON.parse(JSON.stringify(project.memos.list));
+
+      // Assuming members.subTaskIndex provides the index of the specific subtask
+      // Modify the copied data for the specific subtask
+      newData[members.taskIndex].subTasks[members.index].state =
+        inputState.value;
+
+      // Use useUpdate to update
+      useUpdate("projects", project.id, { memos: { list: newData } });
     }
   };
 
@@ -56,9 +63,10 @@ const ShowMemoDetail = ({ onClose, members }) => {
   //update members list
   useEffect(() => {
     if (project) {
-      let data = project.memos.list;
-      data[members.index].members = membersProject;
-      useUpdate("projects", project.id, { memos: { list: data } });
+      const newData = JSON.parse(JSON.stringify(project.memos.list));
+      newData[members.taskIndex].subTasks[members.index].members =
+        membersProject;
+      useUpdate("projects", project.id, { memos: { list: newData } });
     }
   }, [membersProject]);
 
@@ -220,6 +228,17 @@ const ShowMemoDetail = ({ onClose, members }) => {
                 <p className={`px-2 py-1 bg-gray-100`}> {members.end}</p>
               </div>
             </div>
+            {/* subtask */}
+            {/*  <div className="flex justify-between my-4">
+              <div className="flex flex-col items-start gap-3 w-full">
+                <div className="flex justify-between items-center w-full">
+                  <h4>Subtareas</h4> <p>Total: 0</p>
+                </div>
+                <div className="w-full bg-gray-100 rounded-sm min-h-[40px]">
+                  <p className={`px-2 py-1 bg-gray-100`}> {members.subtask}</p>
+                </div>
+              </div>
+            </div> */}
             {/* button */}
             <div className={styleModal.form.buttonbox}>
               <button
@@ -239,4 +258,4 @@ const ShowMemoDetail = ({ onClose, members }) => {
   );
 };
 
-export default ShowMemoDetail;
+export default ShowSubtaskDetail;

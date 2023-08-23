@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       { path: "/history", element: <Backlog /> },
       { path: "/members", element: <Members /> },
       { path: "/task", element: <Memo /> },
-      { path: "/task/:id/:id", element: <Subtask /> },
+      { path: "/task/:id", element: <Subtask /> },
       { path: "/tags", element: <Tags /> },
     ],
   },
