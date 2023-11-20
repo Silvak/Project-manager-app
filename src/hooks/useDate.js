@@ -1,6 +1,12 @@
 import moment from "moment";
 import "moment-timezone";
 
+/**
+ * The `useDate` function in JavaScript exports two helper functions, `dateFormater` and
+ * `currentTimeZone`, which can be used for formatting dates and getting the current time zone.
+ * @returns The function `useDate` returns an object with two properties: `dateFormater` and
+ * `currentTimeZone`.
+ */
 export default function useDate() {
   // dateFormater: 2021-01-01
   const dateFormater = (time) => {

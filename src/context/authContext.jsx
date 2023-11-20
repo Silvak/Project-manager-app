@@ -9,10 +9,8 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 
-//
 export const authContext = createContext();
 
-//
 export const useAuth = () => {
   const context = useContext(authContext);
   if (!context) {
@@ -22,7 +20,6 @@ export const useAuth = () => {
   return context;
 };
 
-//
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

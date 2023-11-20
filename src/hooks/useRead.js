@@ -9,8 +9,12 @@ import {
 } from "firebase/firestore";
 
 /**
- * read data from a collection
- **/
+ * The `useRead` function is a custom hook in JavaScript that retrieves data from a Firestore
+ * collection based on the current user's ID.
+ * @param docName - The `docName` parameter is the name of the collection in Firestore that you want to
+ * query.
+ * @returns The `data` array is being returned.
+ */
 const useRead = (docName) => {
   const [data, setData] = useState([]);
   let userId = auth.currentUser.uid;
